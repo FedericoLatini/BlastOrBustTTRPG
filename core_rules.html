@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blast or Bust - Core Rules (Module 0)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400;700;900&display=swap');
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --accent-color: #111111;
+            --brand-red: #c94025;
+            --gold-accent: #d4af37;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        /* PRINT CONFIGURATION */
+        @page { size: A4 portrait; margin: 10mm; }
+        @page landscape-page { size: A4 landscape; margin: 8mm; }
+
+        body {
+            color: var(--text-color);
+            font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+            font-size: 9pt;
+            line-height: 1.35;
+            margin: 0; 
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        /* WEB READER TOOLBAR */
+        .web-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: #111111;
+            border-bottom: 2px solid var(--brand-red);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            font-family: 'Cinzel', serif;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 10pt;
+            letter-spacing: 1px;
+        }
+        .nav-brand a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .nav-brand a:hover { color: var(--brand-red); }
+        .nav-brand .nav-sep { color: #555; }
+        .nav-brand .nav-sub { color: #aaa; font-size: 8.5pt; text-transform: uppercase; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 8pt;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            font-family: 'Cinzel', serif;
+            font-size: 8pt;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav-btn-primary {
+            background: var(--brand-red);
+            color: #fff;
+            border: 1px solid #e04a2d;
+        }
+        .nav-btn-primary:hover {
+            background: #e04a2d;
+            box-shadow: 0 2px 10px rgba(201, 64, 37, 0.4);
+        }
+        .nav-btn-secondary {
+            background: transparent;
+            color: #eee;
+            border: 1px solid #555;
+        }
+        .nav-btn-secondary:hover {
+            background: #222;
+            color: #fff;
+            border-color: #888;
+        }
+
+        /* SCREEN VIEW: DOCUMENT VIEWER WITH PAGE CARDS */
+        @media screen {
+            body {
+                background-color: #181818;
+                background-image: radial-gradient(#262626 1px, transparent 1px);
+                background-size: 24px 24px;
+                padding: 72px 15px 50px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 32px;
+            }
+
+            .page-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .page-badge {
+                font-family: 'Cinzel', serif;
+                font-size: 8pt;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: #888;
+                background: #111;
+                padding: 4px 14px;
+                border: 1px solid #333;
+                border-radius: 20px;
+                margin-bottom: 8px;
+            }
+
+            .page {
+                width: 210mm;
+                max-width: 95vw;
+                min-height: 297mm;
+                background-color: #ffffff;
+                box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+                padding: 12mm;
+                border-radius: 2px;
+                box-sizing: border-box;
+            }
+
+            .page-landscape {
+                width: 297mm;
+                max-width: 95vw;
+                min-height: 210mm;
+                background-color: #ffffff;
+                box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+                padding: 10mm;
+                border-radius: 2px;
+                box-sizing: border-box;
+                overflow-x: auto;
+            }
+        }
+
+        /* PRINT VIEW: HARD PAGINATION FOR CHROMIUM COMPILATION */
+        @media print {
+            .web-nav, .page-badge { display: none !important; }
+            body { background-color: #ffffff; margin: 0; padding: 0; }
+            .page-container { margin: 0; padding: 0; }
+            .page {
+                height: 275mm;
+                width: 100%;
+                break-after: page;
+                page-break-after: always;
+                padding: 12mm;
+            }
+            .page-landscape {
+                height: 194mm;
+                width: 100%;
+                break-after: page;
+                page-break-after: always;
+                padding: 8mm;
+            }
+        }
+
+        .page {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .page-landscape {
+            page: landscape-page;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .page-content { flex-grow: 1; }
+        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; text-align: justify; }
+
+        h1, h2, h3, h4 { font-family: 'Cinzel', serif; text-transform: uppercase; color: var(--accent-color); margin-top: 0; }
+        h1 { font-size: 20pt; text-align: center; border-bottom: 2px solid var(--accent-color); border-top: 2px solid var(--accent-color); padding: 6px 0; margin-bottom: 10px; letter-spacing: 2px; }
+        h2 { font-size: 11pt; border-bottom: 1px solid var(--accent-color); margin-top: 0.9em; padding-bottom: 2px; margin-bottom: 6px; letter-spacing: 1px; }
+        h3 { font-size: 9.5pt; margin-top: 0.7em; margin-bottom: 4px; font-weight: bold; letter-spacing: 0.5px; }
+        p { margin-top: 0; margin-bottom: 7px; }
+
+        /* HERO ILLUSTRATION - PAGE 1 (UNCROPPED 1:1) */
+        .hero-frame {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 4px 0 12px;
+        }
+        .hero-illustration {
+            width: 250px;
+            height: 250px;
+            aspect-ratio: 1/1;
+            display: block;
+            border: 2px solid var(--accent-color);
+            box-shadow: 4px 4px 0px var(--accent-color);
+            object-fit: contain;
+            background-color: #ffffff;
+        }
+
+        /* LANDSCAPE BANNER - PAGE 2 (UNCROPPED 16:9) */
+        .landscape-frame {
+            width: 100%;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+        }
+        .landscape-illustration {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            max-height: 210px;
+            display: block;
+            border: 2px solid var(--accent-color);
+            box-shadow: 3px 3px 0px var(--accent-color);
+            object-fit: cover;
+            object-position: center bottom;
+            background-color: #fff;
+        }
+
+        .box { border: 1.5px solid var(--accent-color); padding: 7px 9px; margin: 8px 0; background-color: #f9f9f9; }
+        .box-title { font-family: 'Cinzel', serif; font-weight: bold; text-align: center; margin-top: 0; border-bottom: 1px solid var(--accent-color); padding-bottom: 3px; margin-bottom: 5px; font-size: 8.5pt; letter-spacing: 1px; }
+        .dropcap { float: left; font-size: 2.8em; line-height: 0.8; padding-right: 5px; padding-top: 2px; font-family: 'Cinzel', serif; color: var(--accent-color); font-weight: bold; }
+        ul, ol { padding-left: 16px; margin: 3px 0 6px 0; }
+
+        /* ADVENTURE SCENES - PAGE 3 (UNCROPPED 16:9 PANELS) */
+        .adv-scene {
+            display: flex;
+            gap: 5mm;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        .adv-scene img {
+            width: 220px;
+            height: auto;
+            aspect-ratio: 16/9;
+            object-fit: contain;
+            border: 2px solid var(--accent-color);
+            box-shadow: 3px 3px 0px var(--accent-color);
+            flex-shrink: 0;
+            background-color: #fff;
+        }
+        .adv-text { flex-grow: 1; }
+        .adv-text h3 { margin-top: 0; font-size: 10pt; border-bottom: 1px solid var(--accent-color); padding-bottom: 2px; margin-bottom: 4px; }
+        .adv-stats { background-color: #f0f0f0; border: 1px solid var(--accent-color); padding: 5px 8px; font-size: 8pt; margin-top: 4px; line-height: 1.35; }
+
+        /* DICE SCALE DISPLAY */
+        .dice-scale {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 5px 6px;
+            background: #f4f4f4;
+            border: 1px solid #111;
+            margin: 5px 0;
+            font-family: 'Cinzel', serif;
+            font-size: 7.5pt;
+            font-weight: bold;
+        }
+        .dice-scale .scale-label { font-size: 7pt; color: #444; }
+        .dice-scale .scale-arrow { font-size: 10pt; color: #777; }
+
+        /* GM SCREEN LANDSCAPE STYLES */
+        .gm-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--accent-color);
+            border-top: 2px solid var(--accent-color);
+            padding: 4px 12px;
+            margin-bottom: 6px;
+            background-color: #f7f7f7;
+        }
+        .gm-title-bar h1 { font-size: 14pt; margin: 0; border: none; padding: 0; letter-spacing: 2px; }
+        .gm-title-bar span { font-family: 'Cinzel', serif; font-size: 8pt; font-weight: bold; color: #555; letter-spacing: 1px; }
+
+        .gm-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5mm;
+            flex-grow: 1;
+        }
+
+        .gm-panel {
+            border: 2px solid var(--accent-color);
+            box-shadow: 3px 3px 0px var(--accent-color);
+            background-color: #ffffff;
+            padding: 6px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 8pt;
+            line-height: 1.25;
+            overflow: hidden;
+        }
+
+        .gm-panel-header {
+            background: #111;
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: 9pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 2.5px 4px;
+            letter-spacing: 1px;
+            margin: -6px -8px 3px -8px;
+        }
+
+        .gm-block { border: 1px solid #333; padding: 4px 6px; background: #fafafa; }
+        .gm-block-title {
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 8pt;
+            color: #111;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 1px;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .gm-table { width: 100%; border-collapse: collapse; font-size: 7.5pt; margin: 2px 0; }
+        .gm-table th, .gm-table td { border: 1px solid #ccc; padding: 2px 4px; text-align: left; }
+        .gm-table th { background: #e8e8e8; font-family: 'Cinzel', serif; font-size: 7.5pt; }
+
+        .gm-pill {
+            display: inline-block;
+            padding: 1px 4px;
+            border: 1px solid #111;
+            font-size: 7pt;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            background: #fff;
+        }
+
+        /* CHARACTER SHEETS - 2 PER PAGE (UNCROPPED 1:1 ARTWORK) */
+        .cs-page-container { display: flex; flex-direction: column; gap: 6mm; margin-top: 2px; }
+        .cs-card-large {
+            display: flex;
+            border: 2px solid var(--accent-color);
+            box-shadow: 4px 4px 0px var(--accent-color);
+            background: #fff;
+            height: 114mm;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        
+        /* 1:1 PERFECT SQUARE ART FRAMEWORK (ZERO CROPPING) */
+        .cs-card-image {
+            width: 108mm;
+            height: 108mm;
+            margin: 3mm 0 3mm 3mm;
+            border: 1.5px solid var(--accent-color);
+            position: relative;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .cs-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* NEVER CROP */
+            display: block;
+        }
+        
+        .cs-card-content {
+            flex-grow: 1;
+            padding: 6px 10px 6px 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .cs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 2px solid var(--accent-color);
+            margin-bottom: 4px;
+            padding-bottom: 2px;
+        }
+        .cs-header h2 { margin: 0; font-size: 14pt; border: none; padding: 0; letter-spacing: 1px; }
+        .cs-header .cs-sub { font-size: 7.5pt; font-family: 'Cinzel', serif; color: #555; text-transform: uppercase; font-weight: bold; }
+        
+        .cs-stats { display: flex; justify-content: space-between; margin-bottom: 4px; font-family: 'Cinzel', serif; font-weight: bold; }
+        .cs-stat-box {
+            border: 1.5px solid var(--accent-color);
+            padding: 3px 5px;
+            width: 48.5%;
+            background-color: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            box-shadow: 1.5px 1.5px 0px var(--accent-color);
+            box-sizing: border-box;
+        }
+        .cs-stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 2px;
+        }
+        .cs-stat-title { font-size: 6.5pt; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
+        .cs-stat-max { font-size: 8pt; color: #111; font-weight: 900; }
+        .cs-stat-track {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding-top: 2px;
+        }
+        .cs-current-label { font-size: 6.5pt; color: #222; text-transform: uppercase; white-space: nowrap; font-weight: bold; letter-spacing: 0.5px; }
+        .cs-current-line {
+            flex-grow: 1;
+            border-bottom: 1.5px solid #111;
+            height: 12px;
+            background: #ffffff;
+            border-radius: 1px;
+        }
+        
+        .cs-attributes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+            margin-bottom: 4px;
+        }
+        .cs-attr {
+            border: 1px solid #222;
+            padding: 2px 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fdfdfd;
+        }
+        .cs-attr-info { display: flex; flex-direction: column; }
+        .cs-attr-info strong { font-family: 'Cinzel', serif; font-size: 8pt; line-height: 1; }
+        .cs-attr-info span { font-size: 6pt; color: #666; text-transform: uppercase; font-family: 'Cinzel', serif; }
+        
+        .die-badge { display: inline-flex; align-items: center; justify-content: center; }
+        .die-icon { display: block; }
+
+        .cs-item {
+            border-top: 1.5px solid var(--accent-color);
+            font-size: 7.5pt;
+            line-height: 1.25;
+            background-color: #fbfbfb;
+            padding: 4px 6px;
+            border-left: 3px solid var(--accent-color);
+        }
+        .cs-item strong { font-family: 'Cinzel', serif; font-size: 8pt; display: block; margin-bottom: 1px; }
+
+        .footer { text-align: center; font-size: 7pt; font-family: 'Cinzel', serif; color: #777; border-top: 1px solid #bbb; padding-top: 3px; text-transform: uppercase; height: 4.5mm; margin-top: auto; letter-spacing: 0.5px; }
+
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP WEB NAVIGATION -->
+    <nav class="web-nav">
+        <div class="nav-brand">
+            <a href="index.html">&larr; Main Showcase</a>
+            <span class="nav-sep">|</span>
+            <span class="nav-sub">Blast or Bust &bull; Module 0</span>
+        </div>
+        <div class="nav-links">
+            <a href="#page-1">Core Engine</a>
+            <a href="#page-2">Resolution</a>
+            <a href="#page-3">Intro Adventure</a>
+            <a href="#page-4">Referee Screen</a>
+            <a href="#page-5">Recruits 1-2</a>
+            <a href="#page-6">Recruits 3-4</a>
+            <a href="#page-7">Recruits 5-6</a>
+        </div>
+        <div class="nav-actions">
+            <a href="Blast_or_Bust_Core_Rules_EN.pdf" download class="nav-btn nav-btn-primary">Download PDF</a>
+            <button onclick="window.print()" class="nav-btn nav-btn-secondary">Print Manual</button>
+        </div>
+    </nav>
+
+    <!-- PAGE 1: CORE ENGINE & OBSTACLES -->
+    <div class="page-container" id="page-1">
+        <div class="page-badge">Page 1 of 7 &bull; Core Engine & Obstacle Mechanics</div>
+        <div class="page">
+            <div class="page-content">
+                <h1>Blast or Bust<br><span style="font-size: 11pt; letter-spacing: 3px; font-weight: 400;">Module 0: Core Rules</span></h1>
+                
+                <div class="hero-frame">
+                    <img src="tesb_warrior.jpg" alt="Warrior of the Ash Wastes" class="hero-illustration">
+                </div>
+
+                <div class="grid-2col">
+                    <div>
+                        <h2 style="margin-top: 0;">The Ash Wastes</h2>
+                        <p><span class="dropcap">T</span>he world forged in <em>Ten Earth Shattering Blows</em> is cruel, unforgiving, and scorched beneath an incinerating sun. You are not legendary heroes or untouchable mages; you are hungry scavengers scraping through ruins of an obliterated civilization, armed with salvaged iron and stubborn grit.</p>
+                        
+                        <h2>What You Need to Play</h2>
+                        <p>To venture forth, you need 1 Character Sheet per player, pencils, and scrap paper. Most importantly, you will need <strong>multiple full sets of polyhedral dice</strong> (d4, d6, d8, d10, d12, d20). Greed will tempt you to roll often—keep them within arm's reach.</p>
+                        
+                        <h2>Referee Philosophy</h2>
+                        <p>The players are the driving force. The Referee describes the harsh environment, adjudicates intent, and enforces consequences, but <strong>the players roll all the dice</strong>. The wasteland is completely indifferent to survival: brazen ingenuity is rewarded, while hesitation invites disaster.</p>
+                    </div>
+                    <div>
+                        <h2 style="margin-top: 0;">Everything is Combat</h2>
+                        <p>Passive skill checks do not exist. Any barrier—a rusted bulkhead door, a boiling toxic geyser, a hostile sentry line, a high-stakes bribe, or a ravenous wasteland beast—is treated as an active adversary with <strong>Hit Points (HP)</strong>. Overcome it by breaking its HP before its lethal Counterattacks break you.</p>
+                        
+                        <div class="box">
+                            <h3 class="box-title">Anatomy of an Obstacle</h3>
+                            <ol>
+                                <li><strong>Difficulty Threshold:</strong> The minimum total sum required to score a hit. Low (14+), Medium (17+), Severe (20+).</li>
+                                <li><strong>Permitted Attributes:</strong> The Referee assigns 1 Physical and 1 Mental attribute viable for the task.</li>
+                                <li><strong>Health Pool (HP):</strong> Minor hazard (10-15 HP), Serious confrontation (20-30 HP), Apex threat (40-60+ HP).</li>
+                                <li><strong>Counterattack:</strong> What the obstacle does when players Bust or hesitate (Direct damage, lost gear, toxic exposure).</li>
+                            </ol>
+                        </div>
+
+                        <h3>The Escalation Clock</h3>
+                        <p>Every turn spent without reducing an obstacle's HP allows the environment to sour. The sun rises higher, the mud thickens, and survival narrows.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">Blast or Bust TTRPG &bull; Inspired by Ten Earth Shattering Blows by Nuclearpasta &bull; Game Design: Federico Latini &bull; Layout: Antigravity</div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: CONFLICT RESOLUTION & HEALTH -->
+    <div class="page-container" id="page-2">
+        <div class="page-badge">Page 2 of 7 &bull; Conflict Resolution & Health</div>
+        <div class="page">
+            <div class="page-content">
+                <div class="landscape-frame">
+                    <img src="tesb_landscape.jpg" alt="The Desolate Wastes" class="landscape-illustration">
+                </div>
+
+                <div class="grid-2col">
+                    <div>
+                        <h2 style="margin-top: 0;">Player Attributes</h2>
+                        <p>Each recruit possesses 6 Attributes split into two domains. <strong>Physical</strong>: Strength (STR), Agility (AGI), Constitution (CON). <strong>Mental</strong>: Wits (WIT), Knowledge (KNO), Presence (PRE).</p>
+                        <p>Each attribute is tied to a polyhedral die. In <em>Blast or Bust</em>, <strong>die size is inverse to competence</strong>:</p>
+                        
+                        <!-- Polyhedral Dice Progression Visual Ladder -->
+                        <div class="dice-scale">
+                            <span class="scale-label">Mastery</span>
+                            <svg class="die-icon" viewBox="0 0 32 32" width="20" height="20">
+                                <path d="M16 3 L28 10 L16 17 L4 10 Z" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                <path d="M4 10 L16 17 L16 29 L4 22 Z" fill="#eaeaea" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                <path d="M28 10 L16 17 L16 29 L28 22 Z" fill="#ffffff" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                <text x="16" y="24.5" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle" fill="#000">d6</text>
+                            </svg>
+                            <span class="scale-arrow">&rarr;</span>
+                            <svg class="die-icon" viewBox="0 0 32 32" width="20" height="20">
+                                <polygon points="16,2 29,16 16,30 3,16" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                <line x1="3" y1="16" x2="29" y2="16" stroke="#111" stroke-width="1.4"/>
+                                <line x1="16" y1="2" x2="16" y2="30" stroke="#111" stroke-width="1.4"/>
+                                <text x="16" y="20" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle" fill="#000">d8</text>
+                            </svg>
+                            <span class="scale-arrow">&rarr;</span>
+                            <svg class="die-icon" viewBox="0 0 32 32" width="20" height="20">
+                                <polygon points="16,2 29,11 25,29 7,29 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                <line x1="16" y1="2" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                <line x1="3" y1="11" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                <line x1="29" y1="11" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                <line x1="7" y1="29" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                <line x1="25" y1="29" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                <circle cx="16" cy="17" r="5.5" fill="#fff" stroke="#111" stroke-width="1"/>
+                                <text x="16" y="19.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">10</text>
+                            </svg>
+                            <span class="scale-arrow">&rarr;</span>
+                            <svg class="die-icon" viewBox="0 0 32 32" width="20" height="20">
+                                <polygon points="16,2 29,11 24,28 8,28 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                <polygon points="16,8 23,13 20,22 12,22 9,13" fill="#ffffff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                                <line x1="16" y1="2" x2="16" y2="8" stroke="#111" stroke-width="1.2"/>
+                                <line x1="29" y1="11" x2="23" y2="13" stroke="#111" stroke-width="1.2"/>
+                                <line x1="24" y1="28" x2="20" y2="22" stroke="#111" stroke-width="1.2"/>
+                                <line x1="8" y1="28" x2="12" y2="22" stroke="#111" stroke-width="1.2"/>
+                                <line x1="3" y1="11" x2="9" y2="13" stroke="#111" stroke-width="1.2"/>
+                                <text x="16" y="18" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">12</text>
+                            </svg>
+                            <span class="scale-arrow">&rarr;</span>
+                            <svg class="die-icon" viewBox="0 0 32 32" width="20" height="20">
+                                <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                            </svg>
+                            <span class="scale-label">Incompetence</span>
+                        </div>
+
+                        <h3>Conflict Resolution Sequence</h3>
+                        <p>When acting against an obstacle, players execute this sequence:</p>
+                        <ol>
+                            <li><strong>Declare Approach:</strong> Select an allowed Physical or Mental attribute matching your tactic.</li>
+                            <li><strong>Chain Rolls:</strong> Roll your Attribute Die. Record the sum. Continue rolling additional dice of that type until you meet or exceed the <strong>Difficulty Threshold</strong>.</li>
+                            <li><strong>Push or Hold:</strong> Once the threshold is met, you may choose to stop and strike, or risk rolling more dice to accumulate heavier damage—until you bust (&gt; 21).</li>
+                        </ol>
+
+                        <div class="box">
+                            <h3 class="box-title">The Rule of 21: Roll Outcomes</h3>
+                            <p><strong>Success (Threshold to 21):</strong> Sunder the obstacle's HP and negate its Counterattack for this round.</p>
+                            <p><strong>Bust (&gt; 21 - Overreach):</strong> Critical failure! Deal 0 damage and immediately suffer the obstacle's Counterattack.</p>
+                            <p><strong>Natural 21 (Epic Strike):</strong> Total mastery. Roll maximum damage automatically, or trigger a dramatic environmental twist.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 style="margin-top: 0;">Damage & Support</h2>
+                        <p>On a successful strike, <strong>gather all dice rolled</strong> in that turn's chain and <strong>reroll them together</strong>: their sum is subtracted directly from the obstacle's HP pool.</p>
+                        <p><em>Smaller dice grant granular control</em>, allowing players to stack 4 or 5 dice safely before nearing 21. When rerolled for damage, these multiple dice yield crushing totals!</p>
+                        
+                        <div class="box">
+                            <h3 class="box-title">The Support Action</h3>
+                            <p>An ally may expend their turn to Support the active player. If the active player <strong>Busts (&gt; 21)</strong>, <strong>instantly discard the last die rolled</strong>. Resume from the prior total and decide immediately to hold or push on!</p>
+                        </div>
+
+                        <h2>Health, Stress & Death</h2>
+                        <p>Recruits track two survival pools:</p>
+                        <ul>
+                            <li><strong>Physical Points (HP):</strong> Flesh, bones, armor. At <strong>0 HP</strong>, you become <em>Incapacitated</em>. Forbidden from actions using STR, AGI, or CON.</li>
+                            <li><strong>Mental Points (MP):</strong> Sanity, nerve, morale. At <strong>0 MP</strong>, you become <em>Broken</em>. Forbidden from actions using WIT, KNO, or PRE.</li>
+                            <li><strong>True Death:</strong> Occurs strictly when both <strong>HP and MP reach 0 simultaneously</strong>. So long as one pool remains, a recruit clings to life!</li>
+                        </ul>
+
+                        <h3>Tactical Recovery</h3>
+                        <p>Breathing dust in a moment of calm restores 1d4 points to the pool of your choice. True healing requires sanctuary, boiled water, and intact bone needles.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">Blast or Bust TTRPG &bull; Inspired by Ten Earth Shattering Blows by Nuclearpasta &bull; Game Design: Federico Latini &bull; Layout: Antigravity</div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: INTRODUCTORY ADVENTURE -->
+    <div class="page-container" id="page-3">
+        <div class="page-badge">Page 3 of 7 &bull; Introductory Adventure: The Well-Fortress</div>
+        <div class="page">
+            <div class="page-content">
+                <h1 style="border:none; margin-bottom: 2px;">The Well-Fortress</h1>
+                <p style="text-align: center; font-size: 9pt; font-style: italic; margin-bottom: 10px; color: #444;">Survivors of the White Ash Wastes: a scorching midday sun rises to flay the flesh from your bones. Your only salvation looms on the scorched horizon: the Well-Fortress, a brutalist bastion of rusted iron and desperate violence.</p>
+                
+                <div class="adv-scene">
+                    <img src="tesb_scene_1.jpg" alt="Racing the Sun">
+                    <div class="adv-text">
+                        <h3>Act I: Racing the Sun</h3>
+                        <p>Incandescent dawn crests behind you, turning air into searing poison. You must sprint through the gorge toward the fortress shadow, dodging boiling acid geysers and unstable Old World concrete slabs buried under ash.</p>
+                        <div class="adv-stats">
+                            <strong>Obstacle:</strong> Ash Waste (HP 25 | Severe 20+)<br>
+                            <strong>Viable Approaches:</strong> AGI (sprinting, sliding under crumbling rubble), WIT (spotting solid bedrock trails).<br>
+                            <strong>Counterattack:</strong> Seared Lungs. Blinding heat flays exposed skin: 1d4 damage to the entire party.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="adv-scene">
+                    <div class="adv-text">
+                        <h3>Act II: The Maw of the Bastion</h3>
+                        <p>You collapse gasping under the iron portcullis. Facing you is the Regent's Guard: emaciated thugs draped in heavy scrap plate. From an iron parapet above, the Regent sneers. Entry has a price, and your lives are worth nothing unless proven in blood.</p>
+                        <div class="adv-stats">
+                            <strong>Obstacle:</strong> The Guards & the Regent (HP 30 | Low 14+)<br>
+                            <strong>Viable Approaches:</strong> PRE (furious intimidation or desperate bartering), STR (shoving through the spear line).<br>
+                            <strong>Counterattack:</strong> Cruel Bastion. Beaten back or scalded by boiling slag: 1d6 damage (player chooses HP or MP).
+                        </div>
+                    </div>
+                    <img src="tesb_scene_2.jpg" alt="The Maw of the Bastion">
+                </div>
+
+                <div class="adv-scene">
+                    <img src="tesb_scene_3.jpg" alt="The Mud Rite">
+                    <div class="adv-text">
+                        <h3>Act III: The Mud Rite</h3>
+                        <p>You have earned the "privilege" to fight for sanctuary. Shoved through iron grates into a sunken arena flooded with viscous mud and blood, the pit gate creaks open. Out lumbers the Pit Champion: a towering horror bolted into crude bone plating.</p>
+                        <div class="adv-stats">
+                            <strong>Obstacle:</strong> The Pit Champion (HP 30 | Medium 17+)<br>
+                            <strong>Viable Approaches:</strong> CON (grappling in choking mud), KNO (identifying weak joints in the bone plating).<br>
+                            <strong>Counterattack:</strong> Viscous Crush. Smashed into the muck: 1d4 damage plus suffocation (-2 additional HP).
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">Blast or Bust TTRPG &bull; Inspired by Ten Earth Shattering Blows by Nuclearpasta &bull; Game Design: Federico Latini &bull; Layout: Antigravity</div>
+        </div>
+    </div>
+
+    <!-- PAGE 4: REFEREE SCREEN (LANDSCAPE) -->
+    <div class="page-container" id="page-4">
+        <div class="page-badge">Page 4 of 7 &bull; Referee Screen (Quick Reference Vademecum)</div>
+        <div class="page-landscape">
+            <div class="gm-title-bar">
+                <h1>Blast or Bust &bull; Referee Screen</h1>
+                <span>Quick Rules Reference &bull; Module 0: Core Engine</span>
+            </div>
+
+            <div class="gm-grid">
+                
+                <!-- PANEL 1: RULE OF 21 & RESOLUTION -->
+                <div class="gm-panel">
+                    <div class="gm-panel-header">I &bull; The Rule of 21 & Resolution</div>
+                    
+                    <div class="gm-block">
+                        <div class="gm-block-title">Turn Sequence (All is Combat)</div>
+                        <ol style="padding-left: 14px; margin: 2px 0;">
+                            <li><strong>Declare Approach:</strong> Pick an allowed attribute (1 Physical or 1 Mental).</li>
+                            <li><strong>Chain Rolls:</strong> Roll attribute die and sum total. Continue rolling until you reach or beat the <strong>Difficulty Threshold</strong>.</li>
+                            <li><strong>Push Your Luck:</strong> Once past threshold: hold and strike, or risk rolling additional dice for bigger damage. Over 21 is a Bust!</li>
+                        </ol>
+                    </div>
+
+                    <div class="gm-block">
+                        <div class="gm-block-title">Roll Outcomes</div>
+                        <table class="gm-table">
+                            <tr>
+                                <th>Result</th>
+                                <th>Mechanical Effect</th>
+                            </tr>
+                            <tr>
+                                <td><strong>Success<br>(Threshold &rarr; 21)</strong></td>
+                                <td>Hit threshold and hold. Deal damage to obstacle HP and <strong>cancel its Counterattack</strong> this round.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bust<br>(&gt; 21)</strong></td>
+                                <td>Critical fail. Deal <strong>0 damage</strong> and immediately suffer the obstacle's <strong>Counterattack</strong>.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Natural 21<br>(Epic)</strong></td>
+                                <td>Flawless triumph! Maximum possible damage rolled automatically, or trigger massive tactical breakthrough.</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="gm-block">
+                        <div class="gm-block-title">Damage & Support</div>
+                        <p style="margin: 2px 0;"><strong>Damage:</strong> Gather <em>all dice rolled</em> in that chain and <strong>reroll them together</strong>. Sum is subtracted from obstacle HP.</p>
+                        <p style="margin: 2px 0;"><strong>Support:</strong> Ally spends turn helping. If active player <em>Busts (&gt;21)</em>, <strong>instantly discard the last die rolled</strong>: resume from prior total!</p>
+                    </div>
+                </div>
+
+                <!-- PANEL 2: ATTRIBUTES, DICE & HEALTH -->
+                <div class="gm-panel">
+                    <div class="gm-panel-header">II &bull; Attributes, Dice & Health</div>
+
+                    <div class="gm-block">
+                        <div class="gm-block-title">Dice Mastery Scale</div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 2px; font-family: 'Cinzel', serif; font-size: 7pt; font-weight: bold;">
+                            <span style="color:#2e7d32;">Mastery</span>
+                            <span>d6 &rarr; d8 &rarr; d10 &rarr; d12 &rarr; d20</span>
+                            <span style="color:#c62828;">Incompetence</span>
+                        </div>
+                        <p style="font-size: 7pt; margin: 2px 0; color: #444;">
+                            <em>Golden Rule:</em> Smaller dice (d6) give immense precision when creeping toward 21 and pile up heavy damage dice. The d20 is wild, unpredictable chaos.
+                        </p>
+                    </div>
+
+                    <div class="gm-block">
+                        <div class="gm-block-title">The 6 Survival Attributes</div>
+                        <table class="gm-table">
+                            <tr>
+                                <th>Physical</th>
+                                <th>Common Applications</th>
+                            </tr>
+                            <tr><td><strong>STR</strong> (Strength)</td><td>Breaching bulkheads, heavy weapons, lifting rubble.</td></tr>
+                            <tr><td><strong>AGI</strong> (Agility)</td><td>Sprinting wastes, dodging geysers, stealth.</td></tr>
+                            <tr><td><strong>CON</strong> (Constitution)</td><td>Enduring heat, resisting poison, mud wrestling.</td></tr>
+                            <tr>
+                                <th>Mental</th>
+                                <th>Common Applications</th>
+                            </tr>
+                            <tr><td><strong>WIT</strong> (Wits)</td><td>Navigation, spotting traps, calm in panic.</td></tr>
+                            <tr><td><strong>KNO</strong> (Knowledge)</td><td>Deciphering Old World ruins, engines, glyphs.</td></tr>
+                            <tr><td><strong>PRE</strong> (Presence)</td><td>Intimidation, commanding respect, haggling.</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="gm-block">
+                        <div class="gm-block-title">Health, Stress & Death</div>
+                        <p style="margin: 1px 0;"><strong>Physical (HP):</strong> At 0 HP: <em>Incapacitated</em>. No STR, AGI, or CON actions.</p>
+                        <p style="margin: 1px 0;"><strong>Mental (MP):</strong> At 0 MP: <em>Broken</em>. No WIT, KNO, or PRE actions.</p>
+                        <p style="margin: 1px 0; color: #b71c1c; font-weight: bold;"><strong>True Death:</strong> Occurs strictly when both HP and MP hit 0 simultaneously!</p>
+                    </div>
+                </div>
+
+                <!-- PANEL 3: ON-THE-FLY OBSTACLES -->
+                <div class="gm-panel">
+                    <div class="gm-panel-header">III &bull; Quick Obstacle Generator</div>
+
+                    <div class="gm-block">
+                        <div class="gm-block-title">Quick Difficulty Guide</div>
+                        <table class="gm-table">
+                            <tr>
+                                <th>Difficulty</th>
+                                <th>Threshold</th>
+                                <th>Typical Encounters</th>
+                            </tr>
+                            <tr>
+                                <td><span class="gm-pill">Low</span></td>
+                                <td><strong>14+</strong></td>
+                                <td>Distracted sentry, rusted gate, basic climb.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="gm-pill">Medium</span></td>
+                                <td><strong>17+</strong></td>
+                                <td>Pit brute, blinding ash storm, tense negotiation.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="gm-pill">Severe</span></td>
+                                <td><strong>20+</strong></td>
+                                <td>Scorching midday sun, bone champion, collapsing vault.</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="gm-block">
+                        <div class="gm-block-title">Hit Point Scale (Obstacle HP)</div>
+                        <table class="gm-table">
+                            <tr><td><strong>Minor Hazard</strong> (10-15 HP)</td><td>Stuck hatch, scrap barricade, lone scavenger.</td></tr>
+                            <tr><td><strong>Standard Conflict</strong> (20-30 HP)</td><td>Guard patrol, ash desert trek, arena gladiator.</td></tr>
+                            <tr><td><strong>Boss / Colossus</strong> (40-60+ HP)</td><td>Megastructure gate, towering mutant, collapsing keep.</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="gm-block">
+                        <div class="gm-block-title">Counterattack Arsenal</div>
+                        <p style="margin: 2px 0;"><strong>Direct Damage:</strong> 1d4 (burns/scrapes), 1d6 (crushing blow/humiliation), 1d8 (crippling trauma).</p>
+                        <p style="margin: 2px 0;"><strong>Complications:</strong> Gear wear, bogged down in mud (-2 HP & +2 to thresholds), ambient doom clock ticks.</p>
+                    </div>
+
+                    <div class="gm-block" style="background: #f0f0f0; border: 1px dashed #444;">
+                        <div class="gm-block-title">Referee Credo</div>
+                        <p style="font-size: 7pt; font-style: italic; margin: 0;">
+                            "Everything is combat. Players roll all the dice. The wastes are indifferent and cruel, but reward brazen grit and desperate audacity."
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer" style="margin-top: 3px;">
+                Blast or Bust TTRPG &bull; Referee Screen &bull; Quick Reference Guide &bull; Ten Earth Shattering Blows
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 5: CHARACTER SHEETS 1 & 2 -->
+    <div class="page-container" id="page-5">
+        <div class="page-badge">Page 5 of 7 &bull; Recruits: Warrior & Scout</div>
+        <div class="page">
+            <div class="page-content">
+                <h1 style="border:none; margin-bottom: 3px;">Character Sheets &bull; Recruits</h1>
+                <div class="cs-page-container">
+                    
+                    <!-- WARRIOR -->
+                    <div class="cs-card-large">
+                        <div class="cs-card-image">
+                            <img src="tesb_char_guerriero.jpg" alt="Warrior">
+                        </div>
+                        <div class="cs-card-content">
+                            <div class="cs-header">
+                                <h2>Warrior</h2>
+                                <span class="cs-sub">Archetype &bull; Level 1</span>
+                            </div>
+                            <div class="cs-stats">
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Physical Health</span>
+                                        <span class="cs-stat-max">Max: 18</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current HP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Mental Health</span>
+                                        <span class="cs-stat-max">Max: 9</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current MP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cs-attributes">
+                                <!-- STR: d10 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>STR</strong><span>Strength</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,11 25,29 7,29 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="3" y1="11" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="29" y1="11" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="7" y1="29" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="25" y1="29" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <circle cx="16" cy="17" r="5.5" fill="#fff" stroke="#111" stroke-width="1"/>
+                                            <text x="16" y="19.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">10</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- WIT: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>WIT</strong><span>Wits</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- AGI: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>AGI</strong><span>Agility</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- KNO: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>KNO</strong><span>Knowledge</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- CON: d12 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>CON</strong><span>Constitution</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,11 24,28 8,28 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,8 23,13 20,22 12,22 9,13" fill="#ffffff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="8" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="11" x2="23" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="24" y1="28" x2="20" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="8" y1="28" x2="12" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="11" x2="9" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="18" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">12</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- PRE: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>PRE</strong><span>Presence</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="cs-item">
+                                <strong>Special Item: Scrap Battleaxe</strong>
+                                A brutal notched weapon forged from salvage. Gain an immediate bonus turn whenever you deal the killing blow to an obstacle.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SCOUT -->
+                    <div class="cs-card-large">
+                        <div class="cs-card-image">
+                            <img src="tesb_char_scout.jpg" alt="Scout">
+                        </div>
+                        <div class="cs-card-content">
+                            <div class="cs-header">
+                                <h2>Scout</h2>
+                                <span class="cs-sub">Archetype &bull; Level 1</span>
+                            </div>
+                            <div class="cs-stats">
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Physical Health</span>
+                                        <span class="cs-stat-max">Max: 14</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current HP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Mental Health</span>
+                                        <span class="cs-stat-max">Max: 13</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current MP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cs-attributes">
+                                <!-- STR: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>STR</strong><span>Strength</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- WIT: d10 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>WIT</strong><span>Wits</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,11 25,29 7,29 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="3" y1="11" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="29" y1="11" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="7" y1="29" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="25" y1="29" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <circle cx="16" cy="17" r="5.5" fill="#fff" stroke="#111" stroke-width="1"/>
+                                            <text x="16" y="19.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">10</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- AGI: d8 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>AGI</strong><span>Agility</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,16 16,30 3,16" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <line x1="3" y1="16" x2="29" y2="16" stroke="#111" stroke-width="1.4"/>
+                                            <line x1="16" y1="2" x2="16" y2="30" stroke="#111" stroke-width="1.4"/>
+                                            <text x="16" y="20" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle" fill="#000">d8</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- KNO: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>KNO</strong><span>Knowledge</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- CON: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>CON</strong><span>Constitution</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- PRE: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>PRE</strong><span>Presence</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="cs-item">
+                                <strong>Special Item: Ash Sight Cloak</strong>
+                                A threadbare tattered shroud that blends into soot. When acting in darkness or from cover, reroll once when you bust.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer">Blast or Bust TTRPG &bull; Inspired by Ten Earth Shattering Blows by Nuclearpasta &bull; Game Design: Federico Latini &bull; Layout: Antigravity</div>
+        </div>
+    </div>
+
+    <!-- PAGE 6: CHARACTER SHEETS 3 & 4 -->
+    <div class="page-container" id="page-6">
+        <div class="page-badge">Page 6 of 7 &bull; Recruits: Knight & Cleric</div>
+        <div class="page">
+            <div class="page-content">
+                <h1 style="border:none; margin-bottom: 3px;">Character Sheets &bull; Recruits</h1>
+                <div class="cs-page-container">
+                    
+                    <!-- KNIGHT -->
+                    <div class="cs-card-large">
+                        <div class="cs-card-image">
+                            <img src="tesb_char_cavaliere.jpg" alt="Knight">
+                        </div>
+                        <div class="cs-card-content">
+                            <div class="cs-header">
+                                <h2>Knight</h2>
+                                <span class="cs-sub">Archetype &bull; Level 1</span>
+                            </div>
+                            <div class="cs-stats">
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Physical Health</span>
+                                        <span class="cs-stat-max">Max: 16</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current HP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Mental Health</span>
+                                        <span class="cs-stat-max">Max: 11</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current MP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cs-attributes">
+                                <!-- STR: d10 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>STR</strong><span>Strength</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,11 25,29 7,29 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="3" y1="11" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="29" y1="11" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="7" y1="29" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="25" y1="29" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <circle cx="16" cy="17" r="5.5" fill="#fff" stroke="#111" stroke-width="1"/>
+                                            <text x="16" y="19.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">10</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- WIT: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>WIT</strong><span>Wits</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- AGI: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>AGI</strong><span>Agility</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- KNO: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>KNO</strong><span>Knowledge</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- CON: d8 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>CON</strong><span>Constitution</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,16 16,30 3,16" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <line x1="3" y1="16" x2="29" y2="16" stroke="#111" stroke-width="1.4"/>
+                                            <line x1="16" y1="2" x2="16" y2="30" stroke="#111" stroke-width="1.4"/>
+                                            <text x="16" y="20" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle" fill="#000">d8</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- PRE: d12 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>PRE</strong><span>Presence</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,11 24,28 8,28 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,8 23,13 20,22 12,22 9,13" fill="#ffffff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="8" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="11" x2="23" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="24" y1="28" x2="20" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="8" y1="28" x2="12" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="11" x2="9" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="18" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">12</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="cs-item">
+                                <strong>Special Item: Corroded Medal of Valor</strong>
+                                A relic of Old World discipline. Military foes or organized troops suffer half their max HP against your attacks.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CLERIC -->
+                    <div class="cs-card-large">
+                        <div class="cs-card-image">
+                            <img src="tesb_char_chierico.jpg" alt="Cleric">
+                        </div>
+                        <div class="cs-card-content">
+                            <div class="cs-header">
+                                <h2>Cleric</h2>
+                                <span class="cs-sub">Archetype &bull; Level 1</span>
+                            </div>
+                            <div class="cs-stats">
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Physical Health</span>
+                                        <span class="cs-stat-max">Max: 12</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current HP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Mental Health</span>
+                                        <span class="cs-stat-max">Max: 15</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current MP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cs-attributes">
+                                <!-- STR: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>STR</strong><span>Strength</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- WIT: d12 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>WIT</strong><span>Wits</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,11 24,28 8,28 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,8 23,13 20,22 12,22 9,13" fill="#ffffff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="8" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="11" x2="23" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="24" y1="28" x2="20" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="8" y1="28" x2="12" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="11" x2="9" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="18" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">12</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- AGI: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>AGI</strong><span>Agility</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- KNO: d10 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>KNO</strong><span>Knowledge</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,11 25,29 7,29 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="3" y1="11" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="29" y1="11" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="7" y1="29" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <line x1="25" y1="29" x2="16" y2="17" stroke="#111" stroke-width="1.3"/>
+                                            <circle cx="16" cy="17" r="5.5" fill="#fff" stroke="#111" stroke-width="1"/>
+                                            <text x="16" y="19.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">10</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- CON: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>CON</strong><span>Constitution</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- PRE: d8 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>PRE</strong><span>Presence</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,16 16,30 3,16" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <line x1="3" y1="16" x2="29" y2="16" stroke="#111" stroke-width="1.4"/>
+                                            <line x1="16" y1="2" x2="16" y2="30" stroke="#111" stroke-width="1.4"/>
+                                            <text x="16" y="20" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle" fill="#000">d8</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="cs-item">
+                                <strong>Special Item: Staff of Judgment</strong>
+                                A knotted ash staff crowned with bone fetishes. As an action, roll 1d8 to inflict mental damage or terrify foes.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer">Blast or Bust TTRPG &bull; Inspired by Ten Earth Shattering Blows by Nuclearpasta &bull; Game Design: Federico Latini &bull; Layout: Antigravity</div>
+        </div>
+    </div>
+
+    <!-- PAGE 7: CHARACTER SHEETS 5 & 6 -->
+    <div class="page-container" id="page-7">
+        <div class="page-badge">Page 7 of 7 &bull; Recruits: Arcanist & Noble</div>
+        <div class="page">
+            <div class="page-content">
+                <h1 style="border:none; margin-bottom: 3px;">Character Sheets &bull; Recruits</h1>
+                <div class="cs-page-container">
+                    
+                    <!-- ARCANIST -->
+                    <div class="cs-card-large">
+                        <div class="cs-card-image">
+                            <img src="tesb_char_arcano.jpg" alt="Arcanist">
+                        </div>
+                        <div class="cs-card-content">
+                            <div class="cs-header">
+                                <h2>Arcanist</h2>
+                                <span class="cs-sub">Archetype &bull; Level 1</span>
+                            </div>
+                            <div class="cs-stats">
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Physical Health</span>
+                                        <span class="cs-stat-max">Max: 8</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current HP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Mental Health</span>
+                                        <span class="cs-stat-max">Max: 19</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current MP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cs-attributes">
+                                <!-- STR: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>STR</strong><span>Strength</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- WIT: d8 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>WIT</strong><span>Wits</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,16 16,30 3,16" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <line x1="3" y1="16" x2="29" y2="16" stroke="#111" stroke-width="1.4"/>
+                                            <line x1="16" y1="2" x2="16" y2="30" stroke="#111" stroke-width="1.4"/>
+                                            <text x="16" y="20" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle" fill="#000">d8</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- AGI: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>AGI</strong><span>Agility</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- KNO: d6 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>KNO</strong><span>Knowledge</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <path d="M16 3 L28 10 L16 17 L4 10 Z" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <path d="M4 10 L16 17 L16 29 L4 22 Z" fill="#eaeaea" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <path d="M28 10 L16 17 L16 29 L28 22 Z" fill="#ffffff" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <text x="16" y="24.5" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle" fill="#000">d6</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- CON: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>CON</strong><span>Constitution</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- PRE: d12 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>PRE</strong><span>Presence</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,11 24,28 8,28 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,8 23,13 20,22 12,22 9,13" fill="#ffffff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="8" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="11" x2="23" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="24" y1="28" x2="20" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="8" y1="28" x2="12" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="11" x2="9" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="18" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">12</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="cs-item">
+                                <strong>Special Item: Ash-Bound Grimoire</strong>
+                                You are the only one who can change reality by fighting it.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NOBLE -->
+                    <div class="cs-card-large">
+                        <div class="cs-card-image">
+                            <img src="tesb_char_nobile.jpg" alt="Noble">
+                        </div>
+                        <div class="cs-card-content">
+                            <div class="cs-header">
+                                <h2>Noble</h2>
+                                <span class="cs-sub">Archetype &bull; Level 1</span>
+                            </div>
+                            <div class="cs-stats">
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Physical Health</span>
+                                        <span class="cs-stat-max">Max: 10</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current HP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                                <div class="cs-stat-box">
+                                    <div class="cs-stat-header">
+                                        <span class="cs-stat-title">Mental Health</span>
+                                        <span class="cs-stat-max">Max: 17</span>
+                                    </div>
+                                    <div class="cs-stat-track">
+                                        <span class="cs-current-label">Current MP:</span>
+                                        <div class="cs-current-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cs-attributes">
+                                <!-- STR: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>STR</strong><span>Strength</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- WIT: d12 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>WIT</strong><span>Wits</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,11 24,28 8,28 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,8 23,13 20,22 12,22 9,13" fill="#ffffff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="8" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="11" x2="23" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="24" y1="28" x2="20" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="8" y1="28" x2="12" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="11" x2="9" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="18" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">12</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- AGI: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>AGI</strong><span>Agility</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- KNO: d12 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>KNO</strong><span>Knowledge</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,11 24,28 8,28 3,11" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,8 23,13 20,22 12,22 9,13" fill="#ffffff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="8" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="11" x2="23" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="24" y1="28" x2="20" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="8" y1="28" x2="12" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="11" x2="9" y2="13" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="18" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">12</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- CON: d20 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>CON</strong><span>Constitution</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <polygon points="16,7 26,22 6,22" fill="#ffffff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/>
+                                            <line x1="16" y1="2" x2="16" y2="7" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="9" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="9" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="29" y1="23" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="3" y1="23" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="26" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <line x1="16" y1="30" x2="6" y2="22" stroke="#111" stroke-width="1.2"/>
+                                            <text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#000">20</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- PRE: d6 -->
+                                <div class="cs-attr">
+                                    <div class="cs-attr-info"><strong>PRE</strong><span>Presence</span></div>
+                                    <span class="die-badge">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22">
+                                            <path d="M16 3 L28 10 L16 17 L4 10 Z" fill="#f8f8f8" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <path d="M4 10 L16 17 L16 29 L4 22 Z" fill="#eaeaea" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <path d="M28 10 L16 17 L16 29 L28 22 Z" fill="#ffffff" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+                                            <text x="16" y="24.5" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle" fill="#000">d6</text>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="cs-item">
+                                <strong>Special Item: Frayed Aristocratic Doublet</strong>
+                                Tattered rags of lost supremacy. In social disputes and negotiations, the Difficulty Threshold is fixed at "Low (14+)" against commoners.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer">Blast or Bust TTRPG &bull; Inspired by Ten Earth Shattering Blows by Nuclearpasta &bull; Game Design: Federico Latini &bull; Layout: Antigravity</div>
+        </div>
+    </div>
+
+</body>
+</html>

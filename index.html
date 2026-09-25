@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blast or Bust | A TTRPG for Ten Earth Shattering Blows</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --primary: #c94025; /* Brutal desert red */
+            --bg-dark: #121212;
+            --text-light: #e0e0e0;
+            --accent: #ff9100;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-image: linear-gradient(to bottom, rgba(18,18,18,0.2), rgba(18,18,18,1)), url('website_hero.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 5rem;
+            color: white;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 4px 4px 0px var(--primary);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            max-width: 650px;
+            margin: 20px auto;
+            color: #ddd;
+            font-weight: 300;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 145, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+        }
+        .btn-secondary:hover {
+            background-color: white;
+            color: #111;
+        }
+
+        section {
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media(max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            h1 { font-size: 3.5rem; }
+        }
+
+        .card {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-left: 4px solid var(--primary);
+            border-radius: 4px;
+        }
+
+        .roadmap {
+            background-color: #1e1e1e;
+            padding: 40px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .module-tag {
+            background-color: var(--accent);
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            background-color: #0a0a0a;
+            color: #777;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Blast or Bust</h1>
+        <p class="subtitle">A ruthless tabletop RPG forged in the ash wastes of <em>Ten Earth Shattering Blows</em>.</p>
+        <div>
+            <a href="core_rules.html" class="btn">Read Core Rules (Module 0)</a>
+            <a href="Blast_or_Bust_Core_Rules_EN.pdf" class="btn btn-secondary" target="_blank">Download PDF</a>
+        </div>
+    </header>
+
+    <section>
+        <h2 class="section-title">Why a Dedicated System?</h2>
+        <div class="grid">
+            <div>
+                <p>The desolate world forged by <em>Nuclearpasta</em> in <strong>Ten Earth Shattering Blows</strong> is not populated by untouchable demigods or sanitized wizardry. It is a grueling, dust-choked wasteland where survivors scrape the bottom of the barrel, gambling everything for a ceramic mask or a single swallow of stale water.</p>
+                <p>Traditional tabletop engines fail to convey this visceral dread. We needed mechanics that make your palms sweat on every single die roll. A system where greed and desperation drive you past your limits... until you break.</p>
+                <p>In <em>Blast or Bust</em>, <strong>everything is combat</strong> and your die size shrinks as your mastery grows. The better you are, the tighter your control. But you alone decide when to hold back—or when to push your luck until you bust.</p>
+            </div>
+            <div class="card">
+                <h3 style="color: var(--accent); margin-top:0;">The Rule of 21</h3>
+                <p>Roll your dice in sequence. Reach the Difficulty Threshold to succeed. But beware: exceed 21 and you Bust—inflicting 0 damage while suffering the world's lethal Counterattack. Rerolling all dice used to calculate damage creates a merciless push-your-luck equation of pure tension.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Module Roadmap</h2>
+        
+        <div style="display: grid; gap: 20px;">
+            <div class="roadmap" style="border: 2px solid var(--primary);">
+                <span class="module-tag" style="background-color: var(--primary); color: white;">Available Now</span>
+                <h3 style="font-size: 1.8rem; margin: 10px 0;">Module 0: Core Engine</h3>
+                <p>The foundational rules of the game. Conflict resolution, universal obstacle mechanics, HP/MP management, the push-your-luck chain, the complete <em>Well-Fortress</em> introductory adventure, a landscape Referee Screen, and 6 illustrated rookie character sheets.</p>
+            </div>
+
+            <div class="roadmap" style="opacity: 0.85; border: 1px dashed #777;">
+                <span class="module-tag">Soon To Come</span>
+                <h3 style="font-size: 1.8rem; margin: 10px 0;">Module 1: Character Creation & Leveling</h3>
+                <p>Full character progression from rookie scavengers to hardened wasteland veterans. Archetype deep-dives (Arcanist, Noble, Scout, Warrior, Cleric) and an expanded arsenal of scavenged relics from the world of TESB, from sauroid teeth to makeshift prosthetics.</p>
+            </div>
+
+            <div class="roadmap" style="opacity: 0.55; border: 1px dashed #444;">
+                <span class="module-tag" style="background-color: #555; color:#ccc;">In Development</span>
+                <h3 style="font-size: 1.8rem; margin: 10px 0;">Module 2: The Hazard & Obstacle Forge</h3>
+                <p>Procedural generation tables for ash wastes, nomadic raiders, colossal biomechanical horrors, and the dreaded escalation mechanics of the <em>Tension Die</em>.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Blast or Bust. A tabletop tribute to the webcomic <em>Ten Earth Shattering Blows</em> by Nuclearpasta. Game Design: Federico Latini.</p>
+    </footer>
+
+</body>
+</html>
