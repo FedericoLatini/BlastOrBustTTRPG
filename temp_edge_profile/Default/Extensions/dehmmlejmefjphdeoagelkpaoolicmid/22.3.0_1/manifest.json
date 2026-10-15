@@ -1,0 +1,26 @@
+{
+   "action": {
+      "title": "__MSG_extensionName__"
+   },
+   "author": "Victor Azevedo and Tahoe Beetschen",
+   "background": {
+      "service_worker": "src/scripts/service-worker.js"
+   },
+   "chrome_url_overrides": {
+      "newtab": "index.html"
+   },
+   "default_locale": "en",
+   "description": "__MSG_extensionDesc__",
+   "icons": {
+      "128": "src/assets/favicons/favicon-128x128.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn8UsclEnBIZcTxIJ9EgoSpO72V/8cfqMeKnOwLDbNl5SowVwqB6t30Iqlrq77wx1Sc/08qSOc3Yswy3IHSAEt6RSN1YH3S4ecZ3EI+CCYaazF/OANuo/ucbpus0WzjJtQmXw/8RFLJUXwCvtGMO7gBkH3FYFFWyBdySQ5aDmH3iOEnl+L8R6XUgxMMhAXfT/aezaAwS2ajrEHjr9oGtf3uKzWz6TCqYd3kPId5u1Z6GqKqjJOZUptMbr82fDyNeDn+eNYRWCTkmplPQxmjIjtP1jchj/fnndSZwJZXasyesuI/iYiBlPOBEhNyr9pzWbsdzZyFFQJvknpHruwbdk0wIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_extensionName__",
+   "offline_enabled": true,
+   "optional_permissions": [ "bookmarks", "topSites", "search" ],
+   "permissions": [ "storage" ],
+   "short_name": "Bonjourr",
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "22.3.0"
+}

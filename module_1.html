@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blast or Bust - Module 1: Character Creation & Advancement</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400;700;900&display=swap');
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --accent-color: #111111;
+            --brand-red: #c94025;
+            --brand-red-dark: #8b2510;
+            --gold-accent: #d4af37;
+            --parchment-border: #2b2620;
+            --box-bg: #f8f6f0;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        @page { size: A4 portrait; margin: 10mm; }
+
+        body {
+            color: var(--text-color);
+            font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+            font-size: 8.5pt;
+            line-height: 1.32;
+            margin: 0; 
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        /* WEB READER TOOLBAR */
+        .web-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: #111111;
+            border-bottom: 2px solid var(--brand-red);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            font-family: 'Cinzel', serif;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 10pt;
+            letter-spacing: 1px;
+        }
+        .nav-brand a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .nav-brand a:hover { color: var(--brand-red); }
+        .nav-brand .nav-sep { color: #555; }
+        .nav-brand .nav-sub { color: #aaa; font-size: 8.5pt; text-transform: uppercase; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 8pt;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            font-family: 'Cinzel', serif;
+            font-size: 8pt;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav-btn-primary {
+            background: var(--brand-red);
+            color: #fff;
+            border: 1px solid #e04a2d;
+        }
+        .nav-btn-primary:hover {
+            background: #e04a2d;
+            box-shadow: 0 2px 10px rgba(201, 64, 37, 0.4);
+        }
+        .nav-btn-secondary {
+            background: transparent;
+            color: #eee;
+            border: 1px solid #555;
+        }
+        .nav-btn-secondary:hover {
+            background: #222;
+            color: #fff;
+            border-color: #888;
+        }
+
+        /* SCREEN VIEW: DOCUMENT VIEWER WITH PAGE CARDS */
+        @media screen {
+            body {
+                background-color: #181818;
+                background-image: radial-gradient(#262626 1px, transparent 1px);
+                background-size: 24px 24px;
+                padding: 72px 15px 50px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 32px;
+            }
+
+            .page-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .page-badge {
+                font-family: 'Cinzel', serif;
+                font-size: 8pt;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: #888;
+                background: #111;
+                padding: 4px 14px;
+                border: 1px solid #333;
+                border-radius: 20px;
+                margin-bottom: 8px;
+            }
+
+            .page {
+                width: 210mm;
+                max-width: 95vw;
+                min-height: 297mm;
+                background-color: #ffffff;
+                box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+                padding: 10mm 12mm;
+                border-radius: 2px;
+                box-sizing: border-box;
+            }
+        }
+
+        /* PRINT VIEW: HARD PAGINATION FOR CHROMIUM COMPILATION */
+        @media print {
+            .web-nav, .page-badge { display: none !important; }
+            body { background-color: #ffffff; margin: 0; padding: 0; }
+            .page-container { margin: 0; padding: 0; }
+            .page {
+                height: 275mm;
+                width: 100%;
+                break-after: page;
+                page-break-after: always;
+                padding: 10mm 12mm;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            .page:last-child {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+        }
+
+        /* TYPOGRAPHY & OSR FORMATTING */
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', Georgia, serif;
+            color: var(--accent-color);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.15;
+        }
+
+        h1 {
+            font-size: 16pt;
+            font-weight: 900;
+            text-align: center;
+            border-bottom: 2px solid var(--brand-red);
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 10.5pt;
+            border-bottom: 1px solid #222;
+            padding-bottom: 2px;
+            margin-top: 8px;
+            margin-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 9pt;
+            margin-top: 6px;
+            margin-bottom: 3px;
+            color: var(--brand-red);
+        }
+
+        p { margin: 0 0 6px 0; text-align: justify; }
+
+        .dropcap {
+            float: left;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 30pt;
+            line-height: 24pt;
+            padding-top: 2px;
+            padding-right: 6px;
+            padding-left: 1px;
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+
+        .hero-banner {
+            width: 100%;
+            height: 105px;
+            border: 1px solid var(--parchment-border);
+            margin-bottom: 8px;
+            background-color: #000;
+            overflow: hidden;
+        }
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 35%;
+            filter: grayscale(85%) contrast(120%);
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .box {
+            background-color: var(--box-bg);
+            border: 1px solid #222;
+            border-left: 3px solid var(--brand-red);
+            padding: 6px 8px;
+            margin: 6px 0;
+            font-size: 8pt;
+        }
+
+        .box-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 8.5pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            color: var(--brand-red-dark);
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 2px;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 8pt;
+            margin: 5px 0;
+        }
+        .table-custom th, .table-custom td {
+            border: 1px solid #333;
+            padding: 3px 6px;
+            text-align: center;
+        }
+        .table-custom th {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-size: 7.5pt;
+            letter-spacing: 0.5px;
+        }
+        .table-custom tr:nth-child(even) {
+            background-color: #f2eee6;
+        }
+
+        .footer {
+            margin-top: 8px;
+            border-top: 1px solid #444;
+            padding-top: 3px;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 6.5pt;
+            color: #666;
+            text-align: center;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* DICE SVG ICONS & SCALES */
+        .die-icon {
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .dice-scale {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            background: #fff;
+            border: 1px solid #444;
+            padding: 4px 6px;
+            margin: 5px 0;
+        }
+        .scale-label {
+            font-family: 'Cinzel', serif;
+            font-size: 7pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--brand-red);
+        }
+        .scale-arrow {
+            font-size: 8.5pt;
+            color: #777;
+            font-weight: bold;
+        }
+
+        /* GEAR CARDS */
+        .gear-archetype-card {
+            border: 1px solid #333;
+            background: #fff;
+            padding: 6px 8px;
+            margin-bottom: 6px;
+            border-left: 3px solid #222;
+        }
+        .gear-archetype-card.warrior { border-left-color: #8b0000; }
+        .gear-archetype-card.scout { border-left-color: #2e5927; }
+        .gear-archetype-card.arcanist { border-left-color: #4a235a; }
+        .gear-archetype-card.cleric { border-left-color: #b7950b; }
+        .gear-archetype-card.noble { border-left-color: #1b4f72; }
+
+        .gear-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 2px;
+            margin-bottom: 4px;
+        }
+        .gear-class-name {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 9pt;
+            color: #111;
+        }
+        .gear-class-sub {
+            font-family: 'Cinzel', serif;
+            font-size: 6.5pt;
+            color: #666;
+            font-style: italic;
+        }
+        .gear-item {
+            margin-bottom: 4px;
+            font-size: 7.8pt;
+            line-height: 1.25;
+        }
+        .gear-item-name {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            color: var(--brand-red-dark);
+        }
+
+        /* ========================================================
+           PAGE 3: OFFICIAL BLANK CHARACTER SHEET STYLING
+           ======================================================== */
+        .sheet-container {
+            border: 2px solid #111;
+            padding: 8px 10px;
+            background-color: #fdfcf9;
+            height: calc(100% - 18px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .sheet-corner-decor {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #111;
+        }
+        .tl { top: 3px; left: 3px; border-right: none; border-bottom: none; }
+        .tr { top: 3px; right: 3px; border-left: none; border-bottom: none; }
+        .bl { bottom: 3px; left: 3px; border-right: none; border-top: none; }
+        .br { bottom: 3px; right: 3px; border-left: none; border-top: none; }
+
+        .sheet-header-grid {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr 1fr;
+            gap: 8px;
+            margin-bottom: 6px;
+            border-bottom: 1.5px solid #111;
+            padding-bottom: 6px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-label {
+            font-family: 'Cinzel', serif;
+            font-size: 6.5pt;
+            font-weight: 700;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-line {
+            border-bottom: 1px solid #111;
+            min-height: 16px;
+            width: 100%;
+        }
+
+        .focus-toggle-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #eee8de;
+            border: 1px solid #222;
+            padding: 3px 8px;
+            margin-bottom: 6px;
+            font-family: 'Cinzel', serif;
+            font-size: 7pt;
+        }
+        .focus-opt {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: bold;
+        }
+        .checkbox-square {
+            width: 10px;
+            height: 10px;
+            border: 1px solid #111;
+            background: #fff;
+            display: inline-block;
+        }
+
+        /* POOLS ROW */
+        .pools-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.1fr;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .pool-card {
+            border: 1.5px solid #111;
+            background: #fff;
+            padding: 5px;
+            text-align: center;
+        }
+        .pool-card.physical { border-top: 3px solid #8b0000; }
+        .pool-card.mental { border-top: 3px solid #1b4f72; }
+        .pool-title {
+            font-family: 'Cinzel', serif;
+            font-size: 8pt;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .pool-values-sub {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 4px 0;
+            font-size: 7pt;
+        }
+        .pool-box {
+            border: 1px solid #111;
+            width: 32px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 9pt;
+            background: #fafafa;
+        }
+        .track-line {
+            border-bottom: 1px dashed #777;
+            height: 14px;
+            margin-top: 3px;
+        }
+
+        /* REFERENCE MINI TABLE */
+        .ref-table-box {
+            border: 1px solid #333;
+            background: #fff;
+            padding: 3px 5px;
+            font-size: 6.8pt;
+        }
+        .ref-table-box h4 {
+            font-size: 6.5pt;
+            margin-bottom: 2px;
+            text-align: center;
+        }
+        .ref-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .ref-table th, .ref-table td {
+            border: 1px solid #999;
+            padding: 1px 2px;
+        }
+        .ref-table th { background: #eee; font-family: 'Cinzel', serif; font-size: 6pt; }
+
+        /* ATTRIBUTES SECTION */
+        .attributes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .attr-domain-box {
+            border: 1px solid #222;
+            background: #fff;
+            padding: 5px;
+        }
+        .attr-domain-title {
+            font-family: 'Cinzel', serif;
+            font-size: 8pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 1.5px solid #222;
+            padding-bottom: 2px;
+            margin-bottom: 4px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .attr-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3px 0;
+            border-bottom: 1px dotted #ccc;
+        }
+        .attr-row:last-child { border-bottom: none; }
+        .attr-name-col {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 7.5pt;
+            width: 110px;
+        }
+        .attr-assigned-die {
+            border: 1px solid #111;
+            width: 30px;
+            height: 18px;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 7.5pt;
+            font-weight: bold;
+            background: #fdfdfd;
+            margin-right: 6px;
+        }
+        .attr-pips {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .die-pip {
+            border: 1px solid #777;
+            padding: 1px 2px;
+            font-size: 5.5pt;
+            font-family: 'Cinzel', serif;
+            background: #fafafa;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            gap: 1px;
+        }
+
+        /* ========================================================
+           LOWER SHEET LAYOUT: EQUIPMENT, FEATURES & PORTRAIT
+           ======================================================== */
+        .sheet-bottom-grid {
+            display: grid;
+            grid-template-columns: 1.12fr 0.88fr;
+            gap: 8px;
+            flex-grow: 1;
+            margin-bottom: 5px;
+        }
+
+        .left-bottom-col {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            justify-content: space-between;
+        }
+
+        .equipment-box {
+            border: 1px solid #222;
+            background: #fff;
+            padding: 5px 7px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .equipment-title {
+            font-family: 'Cinzel', serif;
+            font-size: 7.2pt;
+            font-weight: 700;
+            border-bottom: 1.5px solid #222;
+            padding-bottom: 2px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .equip-special-item {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            background: #fff8f5;
+            border: 1px solid #e5c9bf;
+            padding: 2px 5px;
+            border-left: 3px solid var(--brand-red);
+            margin-top: 1px;
+        }
+        .equip-label {
+            font-family: 'Cinzel', serif;
+            font-size: 6.2pt;
+            font-weight: 700;
+            color: var(--brand-red-dark);
+            white-space: nowrap;
+        }
+        .equip-line-special {
+            border-bottom: 1px solid #333;
+            flex-grow: 1;
+            height: 11px;
+        }
+        .equip-lines-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-top: 2px;
+        }
+        .equip-ruled-line {
+            border-bottom: 1px dotted #888;
+            height: 14px;
+            width: 100%;
+        }
+
+        .features-box {
+            border: 1px solid #222;
+            background: #fff;
+            padding: 5px 7px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .features-title {
+            font-family: 'Cinzel', serif;
+            font-size: 7.2pt;
+            font-weight: 700;
+            border-bottom: 1.5px solid #222;
+            padding-bottom: 2px;
+            margin-bottom: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .notes-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            flex-grow: 1;
+        }
+        .note-ruled-line {
+            border-bottom: 1px dotted #888;
+            height: 14px;
+            width: 100%;
+        }
+
+        /* CHARACTER PORTRAIT CANVAS */
+        .portrait-box {
+            border: 1.5px solid #111;
+            background: #fff;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+        }
+        .portrait-header {
+            font-family: 'Cinzel', serif;
+            font-size: 7.5pt;
+            font-weight: 700;
+            border-bottom: 1.5px solid #222;
+            padding-bottom: 2px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .portrait-canvas {
+            flex-grow: 1;
+            border: 1px dashed #aaa;
+            background-color: #faf9f6;
+            background-image: radial-gradient(#dcd8cf 1px, transparent 1px);
+            background-size: 14px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 6px;
+            min-height: 240px;
+        }
+        .portrait-inner-frame {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .portrait-watermark {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            opacity: 0.4;
+            pointer-events: none;
+            text-align: center;
+            user-select: none;
+        }
+        .portrait-prompt-title {
+            font-family: 'Cinzel', serif;
+            font-size: 7.5pt;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #333;
+            text-transform: uppercase;
+        }
+        .portrait-prompt-sub {
+            font-family: 'Playfair Display', serif;
+            font-size: 6.2pt;
+            font-style: italic;
+            color: #555;
+            letter-spacing: 0.3px;
+        }
+        .portrait-corner {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 1.5px solid #444;
+        }
+        .c-tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+        .c-tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+        .c-bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+        .c-br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+        .vows-scars-bar {
+            border: 1px dashed #777;
+            padding: 3px 6px;
+            margin-top: 4px;
+            font-size: 6.2pt;
+            background: #fbfbfb;
+        }
+        .vows-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-top: 2px;
+        }
+        .vows-line {
+            border-bottom: 1px dotted #888;
+            height: 11px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAVIGATION BAR -->
+    <nav class="web-nav">
+        <div class="nav-brand">
+            <a href="index.html">&larr; Main Showcase</a>
+            <span class="nav-sep">|</span>
+            <span class="nav-sub">Blast or Bust &bull; Module 1</span>
+        </div>
+        <div class="nav-links">
+            <a href="core_rules.html">Core Rules (Module 0)</a>
+            <a href="#page-1">Character Creation</a>
+            <a href="#page-2">Arsenal & Relics</a>
+            <a href="#page-3">Blank Character Sheet</a>
+        </div>
+        <div class="nav-actions">
+            <a href="Blast_or_Bust_Module_1_EN.pdf" download class="nav-btn nav-btn-primary">Download PDF</a>
+            <button onclick="window.print()" class="nav-btn nav-btn-secondary">Print Manual</button>
+        </div>
+    </nav>
+
+    <!-- PAGE 1: CHARACTER CREATION & ADVANCEMENT -->
+    <div class="page-container" id="page-1">
+        <div class="page-badge">Page 1 of 3 &bull; Character Creation & Advancement Rules</div>
+        <div class="page">
+            <h1>Blast or Bust<br><span style="font-size: 10pt; letter-spacing: 3px; font-weight: 400;">Module 1: Character Creation and Advancement</span></h1>
+            
+            <div class="hero-banner">
+                <img src="website_hero.jpg" alt="Saurian Riders and Wasteland Nomads">
+            </div>
+
+            <div class="grid-2col">
+                <div>
+                    <h2>Forging Your Alter Ego</h2>
+                    <p><span class="dropcap">Y</span>our survival in this unforgiving world depends entirely on how you forge your alter ego. You are not destined saviors or polished mercenaries; you are scavengers scraping a violent living under an incinerating sun. Follow these six steps to build your hero:</p>
+                    
+                    <div class="box">
+                        <div class="box-title">Step-by-Step Character Creation</div>
+                        <ol style="padding-left: 14px; margin: 2px 0;">
+                            <li><strong>Archetype:</strong> Select an Archetype from the available list, record it on your character sheet, and apply its unique feature upon creation.</li>
+                            <li><strong>Level:</strong> Establish starting Level with your Referee (typically Level 1).</li>
+                            <li><strong>Focus:</strong> Choose whether your character leans toward <strong>Physical</strong> or <strong>Mental</strong>. Underline your chosen primary Attribute category on your sheet.</li>
+                            <li><strong>Attributes:</strong> Assign die ratings:
+                                <ul style="padding-left: 14px; margin: 2px 0;">
+                                    <li><strong>d8</strong> to one Attribute within your primary category.</li>
+                                    <li><strong>d10</strong> to a second Attribute of your choice.</li>
+                                    <li><strong>d12</strong> to a third Attribute of your choice.</li>
+                                    <li>All remaining Attributes begin at Incompetence (<strong>d20</strong>).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Equipment:</strong> Select one Special Item from your Archetype's starting gear list and add it to your inventory.</li>
+                            <li><strong>Resource Calculation:</strong> Determine your Physical HP and Mental MP pools as shown on the right.</li>
+                        </ol>
+                    </div>
+
+                    <h2>Character Advancement</h2>
+                    <p>At the conclusion of each completed quest or narrative Book, surviving heroes advance in power:</p>
+                    <ul style="padding-left: 15px; margin: 3px 0 6px 0;">
+                        <li><strong>Attribute Upgrade:</strong> Choose one Attribute and step up its die size by one tier (e.g., <strong>d10 &rarr; d8</strong>).</li>
+                        <li><strong>Recalculate Pools:</strong> Recalculate your maximum HP or MP using the upgraded Attribute point value.</li>
+                        <li><strong>Mastery Ceiling:</strong> No Attribute rating may step past <strong>d6</strong>. Beyond this threshold lies the absolute limit of human capability... besides, rolling d4s lacks physical satisfaction.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h2>Resource Pools (HP & MP)</h2>
+                    <p>Maximum Physical HP and Mental MP pools equal the sum of point values derived from your three Physical and Mental Attributes, respectively.</p>
+
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Die Size</th>
+                                <th>Competence Level</th>
+                                <th>Pool Point Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>d6</strong></td><td>Mastery Ceiling</td><td><strong>12</strong> points</td></tr>
+                            <tr><td><strong>d8</strong></td><td>Trained Specialty</td><td><strong>11</strong> points</td></tr>
+                            <tr><td><strong>d10</strong></td><td>Competent</td><td><strong>9</strong> points</td></tr>
+                            <tr><td><strong>d12</strong></td><td>Novice</td><td><strong>6</strong> points</td></tr>
+                            <tr><td><strong>d20</strong></td><td>Incompetence</td><td><strong>2</strong> points</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="box" style="margin-top: 4px;">
+                        <div class="box-title">Calculation Example</div>
+                        <p style="margin: 0; font-size: 7.8pt;">A <strong>Warrior</strong> (Physical Focus) with Physical attributes <strong>STR d10</strong>, <strong>COS d8</strong>, and <strong>AGI d20</strong> has <strong>22 HP</strong> (9 + 11 + 2). With Mental attributes <strong>PRE d12</strong>, <strong>WIT d20</strong>, and <strong>KNO d20</strong>, they possess <strong>10 MP</strong> (6 + 2 + 2).</p>
+                    </div>
+
+                    <h2>Archetype Variations & Traits</h2>
+                    <p>Each Archetype possesses a radical creation feature that bends the starting rule parameters:</p>
+
+                    <div style="font-size: 7.8pt;">
+                        <p><strong>&bull; Warrior</strong> <em>(Gladiator, Martialist, Primordial)</em>: Sets <strong>two</strong> Attributes to <strong>d8</strong>, with the remainder at <strong>d20</strong>.</p>
+                        <p><strong>&bull; Scout</strong> <em>(Tomb Raider, Assassin, Survivor, Spy, Saboteur)</em>: Assigns <strong>d8, d10, and d12</strong> completely freely across any Attributes regardless of primary Focus.</p>
+                        <p><strong>&bull; Arcanist</strong> <em>(Heretic, Saurian Binder, Mechanist, Archaeologist)</em>: The <strong>only class capable of activating Arcane Artifacts</strong>; starts with <strong>two</strong> artifacts from their list.</p>
+                        <p><strong>&bull; Cleric</strong> <em>(Zealot, Prophet, Healer, Bard, Performer)</em>: Starts with <strong>four Attributes at d10</strong> and the remaining two at <strong>d20</strong>.</p>
+                        <p><strong>&bull; Noble</strong> <em>(Knight, Prelate, Merchant)</em>: Starts with <strong>three items</strong>—one class item and two items chosen from different Archetype lists (excluding Arcane Artifacts).</p>
+                    </div>
+
+                    <div class="dice-scale" style="margin-top: 6px;">
+                        <span class="scale-label">Mastery Track</span>
+                        <svg class="die-icon" viewBox="0 0 32 32" width="16" height="16"><path d="M16 3 L28 10 L16 17 L4 10 Z" fill="#fff" stroke="#111" stroke-width="2"/><text x="16" y="24" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle">d6</text></svg>
+                        <span class="scale-arrow">&larr;</span>
+                        <svg class="die-icon" viewBox="0 0 32 32" width="16" height="16"><polygon points="16,2 29,16 16,30 3,16" fill="#fff" stroke="#111" stroke-width="2"/><text x="16" y="20" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle">d8</text></svg>
+                        <span class="scale-arrow">&larr;</span>
+                        <svg class="die-icon" viewBox="0 0 32 32" width="16" height="16"><polygon points="16,2 29,11 25,29 7,29 3,11" fill="#fff" stroke="#111" stroke-width="2"/><text x="16" y="19.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle">10</text></svg>
+                        <span class="scale-arrow">&larr;</span>
+                        <svg class="die-icon" viewBox="0 0 32 32" width="16" height="16"><polygon points="16,2 29,11 24,28 8,28 3,11" fill="#fff" stroke="#111" stroke-width="2"/><text x="16" y="18" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle">12</text></svg>
+                        <span class="scale-arrow">&larr;</span>
+                        <svg class="die-icon" viewBox="0 0 32 32" width="16" height="16"><polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#fff" stroke="#111" stroke-width="2"/><text x="16" y="17.5" font-family="'Cinzel', serif" font-size="6" font-weight="bold" text-anchor="middle">20</text></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">Blast or Bust TTRPG &bull; Module 1: Character Creation &bull; Game Design: Federico Latini &bull; Layout: Antigravity</div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: ARSENAL & STARTING GEAR -->
+    <div class="page-container" id="page-2">
+        <div class="page-badge">Page 2 of 3 &bull; Archetype Arsenal & Scavenged Relics</div>
+        <div class="page">
+            <h1 style="border:none; margin-bottom: 2px;">Archetype Arsenal</h1>
+            <p style="text-align: center; font-size: 8pt; font-style: italic; margin-bottom: 6px; color: #444;">Select your starting gear from your designated class list. In the White Ash Wastes, iron is scarce and relics are soaked in Old World blood.</p>
+            
+            <div class="grid-2col">
+                <div>
+                    <!-- WARRIOR -->
+                    <div class="gear-archetype-card warrior">
+                        <div class="gear-header">
+                            <span class="gear-class-name">Warrior Arsenal</span>
+                            <span class="gear-class-sub">Gladiator &bull; Martialist &bull; Primordial</span>
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Greatsword:</span> Grant <strong>1 reroll on damage rolls</strong> when calculating damage after overcoming an obstacle.
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Tower Shield:</span> Sturdy defensive slab forged of scavenged armor plates. <strong>Absorbs 1d8 incoming damage</strong> from an obstacle's Counterattack.
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Skull Helm:</span> A terrifying trophy carved from sauroid bone. Sets the difficulty threshold for any Intimidation or terror check to <strong>Moderate (14+)</strong>.
+                        </div>
+                    </div>
+
+                    <!-- SCOUT -->
+                    <div class="gear-archetype-card scout">
+                        <div class="gear-header">
+                            <span class="gear-class-name">Scout Arsenal</span>
+                            <span class="gear-class-sub">Tomb Raider &bull; Assassin &bull; Survivor</span>
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Mantle:</span> Threadbare shroud woven from ash-dune reeds. In darkness, your difficulty threshold is capped at <strong>Moderate (14+)</strong>.
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Venomous Sauroid Fang:</span> Coated in neurotoxin. On a successful attack with edged or piercing weapons, deal <strong>+1d4 poison damage per round</strong> until the Obstacle is overcome.
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Rust-Eater Oil:</span> Caustic alchemical sludge. Sets difficulty threshold to <strong>Moderate (14+)</strong> against rusted locks, ancient machinery, or metallic plate armor.
+                        </div>
+                    </div>
+
+                    <!-- ARCANIST -->
+                    <div class="gear-archetype-card arcanist">
+                        <div class="gear-header">
+                            <span class="gear-class-name">Arcanist Relics (Arcane)</span>
+                            <span class="gear-class-sub">Heretic &bull; Saurian Binder &bull; Mechanist</span>
+                        </div>
+                        <p style="font-size: 7.2pt; color: #4a235a; font-style: italic; margin-bottom: 4px;"><strong>Arcane Restriction:</strong> Only Arcanists possess the psychic attunement to activate Arcane Artifacts.</p>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Saurohide Gauntlets (Arcane):</span> Insulated leather tanned in gland fluid. Allows handling <strong>white-hot, electrified, or corrosive objects</strong> without taking damage or losing grip.
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Centennial Toad-Saur Glass Eye (Arcane):</span> A crystallized ocular lens. Knowledge (KNO) checks involving machinery or biomechanical locks are capped at <strong>Moderate (14+)</strong>.
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Tome of Forbidden Whispers (Arcane):</span> Suffer <strong>1d4 MP</strong> to instantly learn an Obstacle's current HP and secret vulnerabilities; sets difficulty threshold against it to <strong>Moderate (14+)</strong>.
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- CLERIC -->
+                    <div class="gear-archetype-card cleric">
+                        <div class="gear-header">
+                            <span class="gear-class-name">Cleric Relics</span>
+                            <span class="gear-class-sub">Zealot &bull; Prophet &bull; Healer &bull; Bard</span>
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Micro-Thalassic Culture:</span> Bioluminescent flask of regenerative primordial organisms. Once per session, <strong>restore 1d4 HP or MP to all party members</strong> (including self).
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Sauroid Bone Candelabra:</span> Blessed relic radiating zeal. Once per session when lit, each party member deals <strong>+1 bonus die of damage</strong> for the entire scene's duration.
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Divine Compass:</span> An erratic needle tuned to moral currents. Once per session, <strong>reveals the optimal physical direction or moral choice</strong> to secure the best narrative outcome.
+                        </div>
+                    </div>
+
+                    <!-- NOBLE -->
+                    <div class="gear-archetype-card noble">
+                        <div class="gear-header">
+                            <span class="gear-class-name">Noble Regalia</span>
+                            <span class="gear-class-sub">Knight &bull; Prelate &bull; Merchant</span>
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Heir's Bangle:</span> Ancient heirloom forged of resonant alloy. <strong>Glows brightly whenever lethal danger is imminent</strong>, warning against ambushes or collapsing traps.
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Signet of a Fallen House:</span> Heavy gold signet. Sets difficulty threshold for Mental checks against nobles, bureaucrats, courtiers, or guildmasters to <strong>Moderate (14+)</strong>.
+                        </div>
+                        <div class="gear-item">
+                            <span class="gear-item-name">&bull; Medal of Valor:</span> Tattered battle honor. Sets difficulty threshold for Mental checks against subjects of lower station or common mercenaries to <strong>Moderate (14+)</strong>.
+                        </div>
+                    </div>
+
+                    <!-- STARTING GEAR & NOBLE ALLOWANCE -->
+                    <div class="box" style="margin-top: 6px; background: #fff;">
+                        <div class="box-title">Noble Cross-Class Starting Allowance</div>
+                        <p style="margin: 0; font-size: 7.5pt;">Nobles begin play with <strong>three total items</strong>: one starting item from the Noble list above, plus two additional items chosen freely from the Warrior, Scout, or Cleric lists (Arcane Artifacts remain forbidden).</p>
+                    </div>
+
+                    <div class="box" style="margin-top: 6px;">
+                        <div class="box-title">Starting Equipment & Survival Gear</div>
+                        <p style="margin: 0; font-size: 7.5pt;">Record your chosen Archetype Special Item on your character sheet upon creation. In addition to their starting relic or weapon, every wanderer of the ash wastes carries basic survival kit: rugged travel garments or scavenged hides, a waterskin, two days of dried rations, and a simple utility knife or crow-chisel.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">Blast or Bust TTRPG &bull; Module 1: Character Creation &bull; Game Design: Federico Latini &bull; Layout: Antigravity</div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: OFFICIAL BLANK CHARACTER SHEET -->
+    <div class="page-container" id="page-3">
+        <div class="page-badge">Page 3 of 3 &bull; Official Printable Character Sheet</div>
+        <div class="page">
+            <div class="sheet-container">
+                <div class="sheet-corner-decor tl"></div>
+                <div class="sheet-corner-decor tr"></div>
+                <div class="sheet-corner-decor bl"></div>
+                <div class="sheet-corner-decor br"></div>
+
+                <!-- SHEET HEADER: IDENTITY -->
+                <div>
+                    <div style="text-align: center; margin-bottom: 4px;">
+                        <span style="font-family: 'Cinzel', serif; font-size: 13pt; font-weight: 900; letter-spacing: 2px;">BLAST OR BUST &bull; CHARACTER SHEET</span>
+                    </div>
+
+                    <div class="sheet-header-grid">
+                        <div class="form-group">
+                            <span class="form-label">Character Name</span>
+                            <div class="form-line"></div>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-label">Player Name</span>
+                            <div class="form-line"></div>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-label">Level</span>
+                            <div class="form-line" style="text-align: center; font-weight: bold; font-family: 'Cinzel', serif;"></div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 6px;">
+                        <div class="form-group">
+                            <span class="form-label">Archetype & Title / Concept</span>
+                            <div class="form-line"></div>
+                        </div>
+                        <div class="form-group">
+                            <span class="form-label">Quest / Book Milestone</span>
+                            <div class="form-line"></div>
+                        </div>
+                    </div>
+
+                    <!-- FOCUS SELECTION BAR -->
+                    <div class="focus-toggle-bar">
+                        <span><strong>PRIMARY FOCUS:</strong> (Underline chosen category below)</span>
+                        <div class="focus-opt">
+                            <span class="checkbox-square"></span>
+                            <span>PHYSICAL FOCUS</span>
+                        </div>
+                        <div class="focus-opt">
+                            <span class="checkbox-square"></span>
+                            <span>MENTAL FOCUS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESOURCE POOLS & POINT VALUES -->
+                <div class="pools-row">
+                    <div class="pool-card physical">
+                        <div class="pool-title" style="color: #8b0000;">Physical Health (HP)</div>
+                        <div class="pool-values-sub">
+                            <div>
+                                <span style="font-size: 6.5pt; color: #666; font-family: 'Cinzel', serif;">MAX HP</span><br>
+                                <div class="pool-box"></div>
+                            </div>
+                            <div style="flex-grow: 1; padding: 0 6px;">
+                                <span style="font-size: 6pt; color: #555; font-family: 'Cinzel', serif;">STR + AGI + COS POINTS</span>
+                                <div class="track-line"></div>
+                            </div>
+                        </div>
+                        <div style="font-size: 6pt; color: #444; font-family: 'Cinzel', serif; text-align: left; padding: 2px;">
+                            CURRENT HP: ___________________________________
+                        </div>
+                    </div>
+
+                    <div class="pool-card mental">
+                        <div class="pool-title" style="color: #1b4f72;">Mental Composure (MP)</div>
+                        <div class="pool-values-sub">
+                            <div>
+                                <span style="font-size: 6.5pt; color: #666; font-family: 'Cinzel', serif;">MAX MP</span><br>
+                                <div class="pool-box"></div>
+                            </div>
+                            <div style="flex-grow: 1; padding: 0 6px;">
+                                <span style="font-size: 6pt; color: #555; font-family: 'Cinzel', serif;">WIT + KNO + PRE POINTS</span>
+                                <div class="track-line"></div>
+                            </div>
+                        </div>
+                        <div style="font-size: 6pt; color: #444; font-family: 'Cinzel', serif; text-align: left; padding: 2px;">
+                            CURRENT MP: ___________________________________
+                        </div>
+                    </div>
+
+                    <div class="ref-table-box">
+                        <h4 style="font-family: 'Cinzel', serif; color: #222;">Point Values & Pool Formula</h4>
+                        <table class="ref-table">
+                            <tr><th>Die</th><td>d20</td><td>d12</td><td>d10</td><td>d8</td><td>d6</td></tr>
+                            <tr><th>Pts</th><td><strong>2</strong></td><td><strong>6</strong></td><td><strong>9</strong></td><td><strong>11</strong></td><td><strong>12</strong></td></tr>
+                        </table>
+                        <div style="font-size: 5.8pt; line-height: 1.15; color: #555; margin-top: 3px; font-style: italic;">
+                            Max Pool = sum of 3 corresponding attribute point values.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6 ATTRIBUTES WITH PROGRESSION LADDER -->
+                <div class="attributes-grid">
+                    <!-- PHYSICAL ATTRIBUTES -->
+                    <div class="attr-domain-box" style="border-top: 2px solid #8b0000;">
+                        <div class="attr-domain-title" style="color: #8b0000;">Physical Attributes</div>
+                        
+                        <div class="attr-row">
+                            <span class="attr-name-col">Strength (STR)</span>
+                            <div class="attr-assigned-die"></div>
+                            <div class="attr-pips">
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d20</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d12</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d10</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d8</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d6</span>
+                            </div>
+                        </div>
+
+                        <div class="attr-row">
+                            <span class="attr-name-col">Agility (AGI)</span>
+                            <div class="attr-assigned-die"></div>
+                            <div class="attr-pips">
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d20</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d12</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d10</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d8</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d6</span>
+                            </div>
+                        </div>
+
+                        <div class="attr-row">
+                            <span class="attr-name-col">Constitution (COS)</span>
+                            <div class="attr-assigned-die"></div>
+                            <div class="attr-pips">
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d20</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d12</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d10</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d8</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d6</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MENTAL ATTRIBUTES -->
+                    <div class="attr-domain-box" style="border-top: 2px solid #1b4f72;">
+                        <div class="attr-domain-title" style="color: #1b4f72;">Mental Attributes</div>
+
+                        <div class="attr-row">
+                            <span class="attr-name-col">Wits (WIT)</span>
+                            <div class="attr-assigned-die"></div>
+                            <div class="attr-pips">
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d20</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d12</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d10</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d8</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d6</span>
+                            </div>
+                        </div>
+
+                        <div class="attr-row">
+                            <span class="attr-name-col">Knowledge (KNO)</span>
+                            <div class="attr-assigned-die"></div>
+                            <div class="attr-pips">
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d20</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d12</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d10</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d8</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d6</span>
+                            </div>
+                        </div>
+
+                        <div class="attr-row">
+                            <span class="attr-name-col">Presence (PRE)</span>
+                            <div class="attr-assigned-die"></div>
+                            <div class="attr-pips">
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d20</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d12</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d10</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d8</span>
+                                <span class="die-pip"><span class="checkbox-square" style="width:7px; height:7px;"></span>d6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LOWER MAIN GRID: EQUIPMENT & POWERS (LEFT) + CHARACTER PORTRAIT (RIGHT) -->
+                <div class="sheet-bottom-grid">
+                    <div class="left-bottom-col">
+                        <!-- EQUIPMENT & POSSESSIONS -->
+                        <div class="equipment-box">
+                            <div class="equipment-title">
+                                <span>Equipment & Possessions</span>
+                                <span style="font-size: 6pt; color: #666; font-family: 'Playfair Display', serif; font-style: italic;">Weapons, Relics & Gear</span>
+                            </div>
+                            <div class="equip-special-item">
+                                <span class="equip-label">Starting Archetype Special Item:</span>
+                                <div class="equip-line-special"></div>
+                            </div>
+                            <div class="equip-lines-group">
+                                <div class="equip-ruled-line"></div>
+                                <div class="equip-ruled-line"></div>
+                                <div class="equip-ruled-line"></div>
+                                <div class="equip-ruled-line"></div>
+                                <div class="equip-ruled-line"></div>
+                                <div class="equip-ruled-line"></div>
+                                <div class="equip-ruled-line"></div>
+                                <div class="equip-ruled-line"></div>
+                            </div>
+                        </div>
+
+                        <!-- ARCHETYPE UNIQUE FEATURES & POWERS -->
+                        <div class="features-box">
+                            <div class="features-title">
+                                <span>Archetype Feature, Powers & Relics</span>
+                                <span style="font-size: 6pt; color: #666; font-family: 'Playfair Display', serif; font-style: italic;">Rules, Miracles & Traits</span>
+                            </div>
+                            <div class="notes-lines">
+                                <div class="note-ruled-line"></div>
+                                <div class="note-ruled-line"></div>
+                                <div class="note-ruled-line"></div>
+                                <div class="note-ruled-line"></div>
+                                <div class="note-ruled-line"></div>
+                                <div class="note-ruled-line"></div>
+                                <div class="note-ruled-line"></div>
+                                <div class="note-ruled-line"></div>
+                                <div class="note-ruled-line"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CHARACTER PORTRAIT & SKETCH CANVAS -->
+                    <div class="portrait-box">
+                        <div class="portrait-header">
+                            <span>Character Portrait</span>
+                            <span style="font-size: 6pt; color: #666; font-family: 'Playfair Display', serif; font-style: italic;">Alter Ego Sketch</span>
+                        </div>
+                        <div class="portrait-canvas">
+                            <div class="portrait-inner-frame">
+                                <div class="portrait-corner c-tl"></div>
+                                <div class="portrait-corner c-tr"></div>
+                                <div class="portrait-corner c-bl"></div>
+                                <div class="portrait-corner c-br"></div>
+                                <div class="portrait-watermark">
+                                    <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#bbb" stroke-width="1.2">
+                                        <circle cx="12" cy="8" r="4"/>
+                                        <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+                                    </svg>
+                                    <span class="portrait-prompt-title">Draw Your Survivor</span>
+                                    <span class="portrait-prompt-sub">Wasteland Visage &bull; Ceramic Mask &bull; Scars &bull; Scavenged Kit</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCARS, VOWS & SURVIVAL LOG -->
+                <div class="vows-scars-bar">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
+                        <span style="font-family: 'Cinzel', serif; font-weight: bold; text-transform: uppercase;">Wasteland Scars, Vows & Campaign Log:</span>
+                        <span style="font-size: 5.8pt; color: #666; font-style: italic;">Maimings, oaths sworn to dust-tribes, and milestones</span>
+                    </div>
+                    <div class="vows-lines">
+                        <div class="vows-line"></div>
+                        <div class="vows-line"></div>
+                        <div class="vows-line"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="footer" style="margin-top: 3px; font-size: 5.8pt; letter-spacing: 0.5px;">Blast or Bust TTRPG &bull; Module 1: Character Creation &bull; Official Blank Character Sheet &bull; Ten Earth Shattering Blows</div>
+        </div>
+    </div>
+
+</body>
+</html>
