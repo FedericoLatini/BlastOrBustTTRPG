@@ -137,3 +137,15 @@
 2026-10-15 22:42:54.008: [INFO] VisibilityChanged: 0
 2026-10-15 22:42:56.639: [INFO] Sync initialization duration: 2853ms
 2026-10-15 22:42:57.863: [INFO] BookmarksSnapshot Shutdown total=178 bar=13 other=3 mobile=4 showBar=0 showBarNTP=1
+2026-10-15 23:06:54.707: [INFO] CurrentProfilePath: C:\Users\feder\.gemini\antigravity\scratch\Blast_or_Bust\BlastOrBustTTRPG\temp_edge_profile\Default
+2026-10-15 23:06:54.707: [INFO] Profiles total count: 1
+2026-10-15 23:06:54.707: [INFO] Profile: name=Personale path=C:\Users\feder\.gemini\antigravity\scratch\Blast_or_Bust\BlastOrBustTTRPG\temp_edge_profile\Default lastActive=2026-10-15T23:06:54.631Z
+2026-10-15 23:06:54.707: [INFO] LastUsedProfileDir: C:\Users\feder\.gemini\antigravity\scratch\Blast_or_Bust\BlastOrBustTTRPG\temp_edge_profile\Default
+2026-10-15 23:06:54.707: [INFO] MostRecentlyActiveProfile: name=Personale path=C:\Users\feder\.gemini\antigravity\scratch\Blast_or_Bust\BlastOrBustTTRPG\temp_edge_profile\Default lastActive=2026-10-15T23:06:54.631Z
+2026-10-15 23:06:54.707: [INFO] OnDoneLoading sync enabled: 1
+2026-10-15 23:06:54.707: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-10-15 23:06:54.707: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-10-15 23:06:54.707: [INFO] BookmarksSnapshot Startup total=178 bar=13 other=3 mobile=4 showBar=0 showBarNTP=1
+2026-10-15 23:06:55.133: [INFO] Sync initialization duration: 416ms
+2026-10-15 23:06:55.235: [INFO] VisibilityChanged: 0
+2026-10-15 23:07:00.952: [INFO] BookmarksSnapshot Shutdown total=178 bar=13 other=3 mobile=4 showBar=0 showBarNTP=1
