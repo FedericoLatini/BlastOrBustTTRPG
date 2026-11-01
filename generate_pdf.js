@@ -43,8 +43,11 @@ if (target === 'core') {
   compilePdf('core_rules.html', 'Blast_or_Bust_Core_Rules_EN.pdf');
 } else if (target === 'module_1' || target === 'mod1') {
   compilePdf('module_1.html', 'Blast_or_Bust_Module_1_EN.pdf');
+} else if (target === 'module_2' || target === 'mod2') {
+  compilePdf('module_2.html', 'Blast_or_Bust_Module_2_EN.pdf');
 } else {
-  // Compile both by default
+  // Compile all by default
   compilePdf('core_rules.html', 'Blast_or_Bust_Core_Rules_EN.pdf');
   compilePdf('module_1.html', 'Blast_or_Bust_Module_1_EN.pdf');
+  compilePdf('module_2.html', 'Blast_or_Bust_Module_2_EN.pdf');
 }

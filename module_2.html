@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blast or Bust - Module 2: Obstacle Generation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400;700;900&display=swap');
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --accent-color: #111111;
+            --brand-red: #c94025;
+            --brand-red-dark: #8b2510;
+            --gold-accent: #d4af37;
+            --parchment-border: #2b2620;
+            --box-bg: #f8f6f0;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        @page { size: A4 portrait; margin: 10mm; }
+
+        body {
+            color: var(--text-color);
+            font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+            font-size: 8.4pt;
+            line-height: 1.32;
+            margin: 0; 
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        /* WEB READER TOOLBAR */
+        .web-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: #111111;
+            border-bottom: 2px solid var(--brand-red);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            font-family: 'Cinzel', serif;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 10pt;
+            letter-spacing: 1px;
+        }
+        .nav-brand a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .nav-brand a:hover { color: var(--brand-red); }
+        .nav-brand .nav-sep { color: #555; }
+        .nav-brand .nav-sub { color: #aaa; font-size: 8.5pt; text-transform: uppercase; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 8pt;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            font-family: 'Cinzel', serif;
+            font-size: 8pt;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav-btn-primary {
+            background: var(--brand-red);
+            color: #fff;
+            border: 1px solid #e04a2d;
+        }
+        .nav-btn-primary:hover {
+            background: #e04a2d;
+            box-shadow: 0 2px 10px rgba(201, 64, 37, 0.4);
+        }
+        .nav-btn-secondary {
+            background: transparent;
+            color: #eee;
+            border: 1px solid #555;
+        }
+        .nav-btn-secondary:hover {
+            background: #222;
+            color: #fff;
+            border-color: #888;
+        }
+
+        /* SCREEN VIEW: DOCUMENT VIEWER WITH PAGE CARDS */
+        @media screen {
+            body {
+                background-color: #181818;
+                background-image: radial-gradient(#262626 1px, transparent 1px);
+                background-size: 24px 24px;
+                padding: 72px 15px 50px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 32px;
+            }
+
+            .page-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .page-badge {
+                font-family: 'Cinzel', serif;
+                font-size: 8pt;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: #888;
+                background: #111;
+                padding: 4px 14px;
+                border: 1px solid #333;
+                border-radius: 20px;
+                margin-bottom: 8px;
+            }
+
+            .page {
+                width: 210mm;
+                max-width: 95vw;
+                min-height: 297mm;
+                background-color: #ffffff;
+                box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+                padding: 10mm 12mm;
+                border-radius: 2px;
+                box-sizing: border-box;
+            }
+        }
+
+        /* PRINT VIEW: HARD PAGINATION FOR CHROMIUM COMPILATION */
+        @media print {
+            .web-nav, .page-badge { display: none !important; }
+            body { background-color: #ffffff; margin: 0; padding: 0; }
+            .page-container { margin: 0; padding: 0; }
+            .page {
+                height: 275mm;
+                width: 100%;
+                break-after: page;
+                page-break-after: always;
+                padding: 10mm 12mm;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            .page:last-child {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+        }
+
+        /* TYPOGRAPHY & OSR FORMATTING */
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', Georgia, serif;
+            color: var(--accent-color);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.15;
+        }
+
+        h1 {
+            font-size: 16pt;
+            font-weight: 900;
+            text-align: center;
+            border-bottom: 2px solid var(--brand-red);
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 10pt;
+            border-bottom: 1px solid #222;
+            padding-bottom: 2px;
+            margin-top: 6px;
+            margin-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 8.5pt;
+            margin-top: 5px;
+            margin-bottom: 3px;
+            color: var(--brand-red);
+        }
+
+        p { margin: 0 0 5px 0; text-align: justify; }
+
+        .dropcap {
+            float: left;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 28pt;
+            line-height: 22pt;
+            padding-top: 2px;
+            padding-right: 6px;
+            padding-left: 1px;
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+
+        .hero-banner {
+            width: 100%;
+            height: 95px;
+            border: 1px solid var(--parchment-border);
+            margin-bottom: 6px;
+            background-color: #000;
+            overflow: hidden;
+        }
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            filter: grayscale(80%) contrast(125%);
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .box {
+            background-color: var(--box-bg);
+            border: 1px solid #222;
+            border-left: 3px solid var(--brand-red);
+            padding: 5px 7px;
+            margin: 5px 0;
+            font-size: 7.8pt;
+        }
+
+        .box-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+            color: var(--brand-red-dark);
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* TABLES */
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 7.8pt;
+            margin: 4px 0 6px;
+        }
+        .table-custom th, .table-custom td {
+            border: 1px solid #333;
+            padding: 2.5px 5px;
+            text-align: left;
+        }
+        .table-custom th {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-size: 7.2pt;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+        .table-custom tr:nth-child(even) {
+            background-color: #f4f1ea;
+        }
+        .table-custom td.center {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+        }
+
+        /* DIE ICONS & VISUAL LADDERS */
+        .die-icon {
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .dice-scale {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: #fff;
+            border: 1px solid #444;
+            padding: 3px 6px;
+            margin: 4px 0 6px;
+        }
+        .scale-label {
+            font-family: 'Cinzel', serif;
+            font-size: 6.8pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--brand-red);
+        }
+        .scale-arrow {
+            font-size: 8pt;
+            color: #777;
+            font-weight: bold;
+        }
+
+        /* BADGES */
+        .threat-badge {
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+            font-size: 6.5pt;
+            font-weight: bold;
+            padding: 1px 5px;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-safe { background: #e8f5e9; color: #1b5e20; border: 1px solid #81c784; }
+        .badge-minor { background: #fffde7; color: #f57f17; border: 1px solid #fff176; }
+        .badge-moderate { background: #fff3e0; color: #e65100; border: 1px solid #ffb74d; }
+        .badge-severe { background: #fbe9e7; color: #bf360c; border: 1px solid #ff8a65; }
+        .badge-extreme { background: #ffebee; color: #b71c1c; border: 1px solid #e57373; }
+        .badge-epic { background: #212121; color: #ff5252; border: 1px solid #ff1744; }
+
+        /* THREAT TABLE (PAGE 2) */
+        .table-threat {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 7.7pt;
+            margin: 6px 0 8px 0;
+        }
+        .table-threat th, .table-threat td {
+            border: 1px solid #333;
+            padding: 4px 6px;
+            text-align: left;
+        }
+        .table-threat th {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-size: 7.2pt;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+        .table-threat tr:nth-child(even) {
+            background-color: #f6f3eb;
+        }
+        .table-threat td.center {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+        }
+
+        /* AID BONUS CARDS */
+        .bonus-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 5px;
+        }
+        .bonus-card {
+            border: 1px solid #333;
+            background: #fff;
+            padding: 6px 8px;
+            border-left: 3px solid var(--brand-red);
+            font-size: 7.7pt;
+            line-height: 1.3;
+        }
+        .bonus-card-title {
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 7.2pt;
+            color: var(--brand-red-dark);
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer {
+            margin-top: 6px;
+            border-top: 1px solid #444;
+            padding-top: 3px;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 6.5pt;
+            color: #666;
+            text-align: center;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAVIGATION BAR -->
+    <nav class="web-nav">
+        <div class="nav-brand">
+            <a href="index.html">&larr; Main Showcase</a>
+            <span class="nav-sep">|</span>
+            <span class="nav-sub">Blast or Bust &bull; Module 2</span>
+        </div>
+        <div class="nav-links">
+            <a href="core_rules.html">Core Rules (Module 0)</a>
+            <a href="module_1.html">Module 1 (Characters)</a>
+            <a href="#page-1">Obstacle Generation</a>
+            <a href="#page-2">The Tension Engine</a>
+        </div>
+        <div class="nav-actions">
+            <a href="Blast_or_Bust_Module_2_EN.pdf" download class="nav-btn nav-btn-primary">Download PDF</a>
+            <button onclick="window.print()" class="nav-btn nav-btn-secondary">Print Manual</button>
+        </div>
+    </nav>
+
+    <!-- PAGE 1: PROCEDURAL OBSTACLE GENERATION TABLE -->
+    <div class="page-container" id="page-1">
+        <div class="page-badge">Page 1 of 2 &bull; Procedural Obstacle Generation Engine</div>
+        <div class="page">
+            <h1>Blast or Bust<br><span style="font-size: 10pt; letter-spacing: 3px; font-weight: 400;">Module 2: Obstacle Generation</span></h1>
+            
+            <div class="hero-banner">
+                <img src="tesb_landscape.jpg" alt="The Desolate Ash Wastes of Ten Earth Shattering Blows">
+            </div>
+
+            <p><span class="dropcap">W</span>hen the Referee needs an immediate challenge for the party, roll <strong>one die of each polyhedral tier</strong> (1d4, 1d6, 1d8, 1d10, 1d12, and 1d20) in a single throw. In seconds, this generates the obstacle's Difficulty Threshold, evocative form, required Attributes, retaliatory Counterattack, and Health Pool.</p>
+
+            <div class="grid-2col">
+                <!-- LEFT COLUMN: THRESHOLD, DESCRIPTORS, FORMS, HEALTH -->
+                <div>
+                    <h2>Polyhedral Matrix: Core Anatomy</h2>
+
+                    <!-- 1d4: DIFFICULTY THRESHOLD -->
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">
+                                    <svg class="die-icon" viewBox="0 0 32 32" width="13" height="13"><polygon points="16,3 29,27 3,27" fill="#fff" stroke="#111" stroke-width="2"/><text x="16" y="24" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle">4</text></svg> 1d4
+                                </th>
+                                <th style="width: 35%;">Threshold</th>
+                                <th>Difficulty Tier</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="center">1</td><td class="center"><strong>14+</strong></td><td>Moderate Obstacle</td></tr>
+                            <tr><td class="center">2</td><td class="center"><strong>17+</strong></td><td>Hard Obstacle</td></tr>
+                            <tr><td class="center">3</td><td class="center"><strong>20+</strong></td><td>Extreme / Legendary</td></tr>
+                            <tr><td class="center">4</td><td class="center"><em>Reroll</em></td><td>Escalated Flux (Roll again)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <!-- 1d6: ADJECTIVE & 1d8: NOUN COMBINED -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                        <!-- 1d6 ADJECTIVE -->
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="13" height="13"><path d="M16 3 L28 10 L16 17 L4 10 Z" fill="#fff" stroke="#111" stroke-width="2"/><text x="16" y="24" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle">6</text></svg> 1d6
+                                    </th>
+                                    <th>Descriptor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="center">1</td><td><strong>Ancient</strong></td></tr>
+                                <tr><td class="center">2</td><td><strong>Mechanical</strong></td></tr>
+                                <tr><td class="center">3</td><td><strong>Magical</strong></td></tr>
+                                <tr><td class="center">4</td><td><strong>Shiny</strong></td></tr>
+                                <tr><td class="center">5</td><td><strong>Dusted</strong></td></tr>
+                                <tr><td class="center">6</td><td><strong>Odd</strong></td></tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 1d8 NOUN -->
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">
+                                        <svg class="die-icon" viewBox="0 0 32 32" width="13" height="13"><polygon points="16,2 29,16 16,30 3,16" fill="#fff" stroke="#111" stroke-width="2"/><text x="16" y="20" font-family="'Cinzel', serif" font-size="7" font-weight="bold" text-anchor="middle">8</text></svg> 1d8
+                                    </th>
+                                    <th>Obstacle Form</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="center">1</td><td><strong>Animal</strong></td></tr>
+                                <tr><td class="center">2</td><td><strong>Guardian</strong></td></tr>
+                                <tr><td class="center">3</td><td><strong>Storm</strong></td></tr>
+                                <tr><td class="center">4</td><td><strong>Trap</strong></td></tr>
+                                <tr><td class="center">5</td><td><strong>Door</strong></td></tr>
+                                <tr><td class="center">6</td><td><strong>Gang</strong></td></tr>
+                                <tr><td class="center">7</td><td><strong>Person</strong></td></tr>
+                                <tr><td class="center">8</td><td><strong>Feeling</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 1d20: HEALTH FORMULA -->
+                    <div class="box" style="margin-top: 4px;">
+                        <div class="box-title">
+                            <span>Obstacle Health Pool (1d20)</span>
+                            <span style="color: var(--brand-red); font-size: 7pt;">Formula: 10 + 1d20</span>
+                        </div>
+                        <p style="margin: 0; font-size: 7.6pt;">Roll <strong>1d20</strong> and add <strong>10</strong> to establish current Obstacle HP (<strong>Range: 11 to 30 HP</strong>). Physical obstacles track Physical HP damage; environmental and psychic impasses deplete the pool through Mental actions.</p>
+                    </div>
+
+                    <!-- BOXED TUTORIAL EXAMPLE -->
+                    <div class="box" style="background: #fff; border: 1px solid #111; margin-top: 4px;">
+                        <div class="box-title">Instant Roll Example</div>
+                        <p style="margin: 0; font-size: 7.4pt;"><strong>Dice Roll:</strong> 1d4 [2: 17+] &bull; 1d6 [5: Dusted] &bull; 1d8 [2: Guardian] &bull; 1d10 [7: COS + WIT] &bull; 1d12 [8: Disarm] &bull; 1d20 [14: 24 HP].<br>
+                        <strong>Narrative Translation:</strong> A <em>Dusted Guardian</em> (ancient stone colossus half-buried in the white dunes). Hard Threshold <strong>17+</strong> with <strong>24 HP</strong>. To defeat it, characters must endure its toxic choking plumes (<strong>COS</strong>) or outmaneuver its blind swings (<strong>WIT</strong>). If a character Busts, its pneumatic sweep knocks their weapon away!</p>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: DUAL ATTRIBUTES & 1d12 COMPLICATIONS -->
+                <div>
+                    <h2>Engagement & Complications</h2>
+
+                    <!-- 1d10: DUAL ATTRIBUTES (PHYSICAL & MENTAL) -->
+                    <div class="box" style="margin-top: 0; padding: 4px 6px;">
+                        <div class="box-title">
+                            <span>Attributes to Fight It (1d10)</span>
+                            <span style="font-size: 6.8pt; color: #555;">Dual Combat Testing</span>
+                        </div>
+                        <p style="margin: 0 0 4px 0; font-size: 7.4pt; font-style: italic;">In <em>Blast or Bust</em>, every obstacle engages body and spirit. Players may roll either assigned Attribute:</p>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px 6px; font-size: 7.4pt;">
+                            <div><strong>[1]</strong> Strength + Wits (STR / WIT)</div>
+                            <div><strong>[6]</strong> Agility + Presence (AGI / PRE)</div>
+                            <div><strong>[2]</strong> Strength + Knowledge (STR / KNO)</div>
+                            <div><strong>[7]</strong> Constitution + Wits (COS / WIT)</div>
+                            <div><strong>[3]</strong> Strength + Presence (STR / PRE)</div>
+                            <div><strong>[8]</strong> Constitution + Knowledge (COS / KNO)</div>
+                            <div><strong>[4]</strong> Agility + Wits (AGI / WIT)</div>
+                            <div><strong>[9]</strong> Constitution + Presence (COS / PRE)</div>
+                            <div><strong>[5]</strong> Agility + Knowledge (AGI / KNO)</div>
+                            <div><strong>[10]</strong> <em>Reroll (Wild Fluctuations)</em></div>
+                        </div>
+                    </div>
+
+                    <!-- 1d12: COUNTERATTACK & COMPLICATION MATRIX -->
+                    <h3 style="margin-top: 6px; margin-bottom: 2px;">The Complication & Counterattack Matrix (1d12)</h3>
+                    <p style="font-size: 7.4pt; margin-bottom: 4px; font-style: italic; color: #444;">When a character <strong>Busts</strong> against the obstacle, it inflicts this lethal reaction:</p>
+
+                    <table class="table-custom" style="margin-top: 2px; font-size: 7.3pt;">
+                        <thead>
+                            <tr>
+                                <th style="width: 12%;">1d12</th>
+                                <th>Retaliatory Effect / Hazardous Consequence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="center">1</td><td><strong>Accumulated Trauma:</strong> Deals <strong>1d4 damage</strong> for each time the character was already damaged by this obstacle.</td></tr>
+                            <tr><td class="center">2</td><td><strong>Gear Shatter:</strong> Deals 0 damage, but completely destroys an item of the character’s choice.</td></tr>
+                            <tr><td class="center">3</td><td><strong>Violent Tumble:</strong> Knocks the character prone (must spend an action or roll AGI to stand).</td></tr>
+                            <tr><td class="center">4</td><td><strong>Psychic Terror:</strong> Inflicts <strong>1d10 Mental Damage (MP)</strong> directly to composure.</td></tr>
+                            <tr><td class="center">5</td><td><strong>Pressure Relief:</strong> Step down the Tension Die by one tier (e.g., d8 &rarr; d6).</td></tr>
+                            <tr><td class="center">6</td><td><strong>Vampiric Drain:</strong> Inflicts <strong>1d6 damage</strong> and the obstacle heals that same amount of HP.</td></tr>
+                            <tr><td class="center">7</td><td><strong>Overwhelming Dread:</strong> All characters' difficulty thresholds rise by one step for the scene.</td></tr>
+                            <tr><td class="center">8</td><td><strong>Weapon Snatch:</strong> Knocks a weapon or special item from grasp, requiring an action to retrieve.</td></tr>
+                            <tr><td class="center">9</td><td><strong>Ash Blinding:</strong> Character is blinded for <strong>1d4 rounds</strong> (all checks suffer disadvantage).</td></tr>
+                            <tr><td class="center">10</td><td><strong>Mental Lock:</strong> Forces all opponents to use exclusively Mental attacks on their next turn.</td></tr>
+                            <tr><td class="center">11</td><td><strong>Mitosis:</strong> The obstacle instantly duplicates itself (sharing identical current HP).</td></tr>
+                            <tr><td class="center">12</td><td><strong>Miraculous Whiff:</strong> Nothing happens; the blow strikes empty sand.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="footer">Blast or Bust TTRPG &bull; Module 2: Obstacle Generation &bull; Game Design: Federico Latini &bull; Layout: Antigravity</div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: THE TENSION MECHANIC & AIDING OTHERS -->
+    <div class="page-container" id="page-2">
+        <div class="page-badge">Page 2 of 2 &bull; The Tension Engine & Tactical Teamwork</div>
+        <div class="page">
+            <h1 style="border:none; margin-bottom: 2px;">The Escalation Engine</h1>
+            <p style="text-align: center; font-size: 8pt; font-style: italic; margin-bottom: 6px; color: #444;">Tension is physical. It sits in the center of the table, creeping ever closer to cataclysm with every broken gamble.</p>
+
+            <!-- THE TENSION DIE SYSTEM -->
+            <div class="box" style="margin-top: 0;">
+                <div class="box-title">
+                    <span>The Tension Die Rule</span>
+                    <span style="color: var(--brand-red);">Central Table Clock</span>
+                </div>
+                <p>When introducing this module, the Referee places a <strong>d4</strong> at the center of the table designated as the <strong>Tension Die</strong>.</p>
+                <ul style="padding-left: 14px; margin: 3px 0 5px 0; font-size: 7.7pt;">
+                    <li><strong>Escalation on Bust:</strong> Each time a player <strong>Busts</strong> (exceeds 21 on a sequential push-your-luck chain), <strong>step up the Tension Die by one tier</strong>:</li>
+                </ul>
+
+                <!-- TENSION DIE VISUAL LADDER -->
+                <div class="dice-scale" style="margin: 5px 0 7px 0; padding: 5px 10px;">
+                    <span class="scale-label" style="font-size: 7.5pt;">Calm (d4)</span>
+                    <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22"><polygon points="16,3 29,27 3,27" fill="#fff" stroke="#111" stroke-width="1.8"/><text x="16" y="24" font-family="'Cinzel', serif" font-size="7.5" font-weight="bold" text-anchor="middle">4</text></svg>
+                    <span class="scale-arrow" style="font-size: 10pt;">&rarr;</span>
+                    <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22"><path d="M16 3 L28 10 L16 17 L4 10 Z" fill="#fff" stroke="#111" stroke-width="1.8"/><text x="16" y="24" font-family="'Cinzel', serif" font-size="7.5" font-weight="bold" text-anchor="middle">6</text></svg>
+                    <span class="scale-arrow" style="font-size: 10pt;">&rarr;</span>
+                    <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22"><polygon points="16,2 29,16 16,30 3,16" fill="#fff" stroke="#111" stroke-width="1.8"/><text x="16" y="20" font-family="'Cinzel', serif" font-size="7.5" font-weight="bold" text-anchor="middle">8</text></svg>
+                    <span class="scale-arrow" style="font-size: 10pt;">&rarr;</span>
+                    <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22"><polygon points="16,2 29,11 25,29 7,29 3,11" fill="#fff" stroke="#111" stroke-width="1.8"/><circle cx="16" cy="17" r="6" fill="#fff" stroke="#111" stroke-width="1"/><text x="16" y="19.5" font-family="'Cinzel', serif" font-size="6.5" font-weight="bold" text-anchor="middle">10</text></svg>
+                    <span class="scale-arrow" style="font-size: 10pt;">&rarr;</span>
+                    <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22"><polygon points="16,2 29,11 24,28 8,28 3,11" fill="#fff" stroke="#111" stroke-width="1.8"/><text x="16" y="18.5" font-family="'Cinzel', serif" font-size="6.5" font-weight="bold" text-anchor="middle">12</text></svg>
+                    <span class="scale-arrow" style="font-size: 10pt;">&rarr;</span>
+                    <svg class="die-icon" viewBox="0 0 32 32" width="22" height="22"><polygon points="16,2 29,9 29,23 16,30 3,23 3,9" fill="#222" stroke="#111" stroke-width="1.8"/><text x="16" y="18" font-family="'Cinzel', serif" font-size="6.5" font-weight="bold" text-anchor="middle" fill="#fff">20</text></svg>
+                    <span class="scale-label" style="color:#b71c1c; font-size: 7.5pt;">Cataclysm (d20)</span>
+                </div>
+
+                <ul style="padding-left: 14px; margin: 3px 0 0 0; font-size: 7.7pt;">
+                    <li><strong>Climax & Reset:</strong> At the <strong>conclusion of each scene</strong>, the Referee rolls the accumulated Tension Die, consults the <strong>Wasteland Threat Table</strong> below, resolves the threat, and <strong>resets the Tension Die back to d4</strong>.</li>
+                    <li><strong>Lowering the Die:</strong> Players can lower the Tension Die by one step by impressing the narrator with <strong>stunning roleplay</strong> or profound narrative sacrifice (at the Referee's sole discretion).</li>
+                </ul>
+            </div>
+
+            <!-- WASTELAND THREAT TABLE -->
+            <table class="table-threat">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Roll</th>
+                        <th style="width: 15%;">Threat Level</th>
+                        <th style="width: 45%;">Threat Encounter (Sample Manifestations)</th>
+                        <th>Referee Narrative Directive & Stakes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="center"><strong>1–5</strong></td>
+                        <td><span class="threat-badge badge-safe">Safe</span></td>
+                        <td>Safe haven, abandoned cistern, minor tactical advantage, or vital ancient intel.</td>
+                        <td>Allows the story to move forward; players catch their breath and consolidate plans.</td>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>6–7</strong></td>
+                        <td><span class="threat-badge badge-minor">Minor</span></td>
+                        <td>Corrosive sand-lice, rusted hinges, blinding squall, or terrain slowing element.</td>
+                        <td>Spices up the wasteland march; requires party cooperation to devise a smart solution.</td>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>8–9</strong></td>
+                        <td><span class="threat-badge badge-moderate">Moderate</span></td>
+                        <td>Active opposing obstacles: wasteland thugs, scavenger ambush, or a hungry pack of saur-jackals.</td>
+                        <td>A genuine battle or challenge; excellent opportunity for characters to shine and gain milestone XP.</td>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>10–11</strong></td>
+                        <td><span class="threat-badge badge-severe">Severe</span></td>
+                        <td>Life-threatening danger: colossal biomechanical terror, villain confrontation, or veteran bounty hunter band.</td>
+                        <td>Do not underestimate. A character could be severely maimed, crippled, or lose a cherished relic.</td>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>12–19</strong></td>
+                        <td><span class="threat-badge badge-extreme">Extreme</span></td>
+                        <td>Supernatural cataclysm: awakening avatar of a minor evil god, sworn Nemesis squad, inescapable run-away hazard.</td>
+                        <td>Far above party level. Certain death for one or more characters unless the entire party runs for their lives!</td>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>20</strong></td>
+                        <td><span class="threat-badge badge-epic">Epic</span></td>
+                        <td>Violent tectonic earthquake, fire-tornado, localized orbital laser strike, or dust-tsunami.</td>
+                        <td>Unescapable doom. Somebody must deliberately sacrifice their life so the rest have a chance to live.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- SECTION 2: AIDING OTHERS (HIGH-STAKES COOPERATION) -->
+            <div class="box" style="margin-top: 2px; border-left-color: #1b4f72; background: #fbfbfc;">
+                <div class="box-title" style="color: #1b4f72;">
+                    <span>Aiding Others Instead of Taking Actions</span>
+                    <span style="color: #8b0000; font-size: 6.8pt; font-weight: bold;">High Stakes Collaboration</span>
+                </div>
+                <p style="font-size: 7.7pt; margin-bottom: 4px;">During any conflict or obstacle phase, players may choose to <strong>declare support and help an ally's action</strong> rather than acting independently. The active player gains <strong>one Tactical Bonus for each aiding ally</strong>.</p>
+
+                <!-- HIGH STAKES RISK CALLOUT -->
+                <div style="background: #fff0f0; border: 1px solid #d9534f; padding: 4px 7px; margin-bottom: 5px; font-size: 7.3pt; border-radius: 2px;">
+                    <strong style="color: #b71c1c; font-family: 'Cinzel', serif;">The Cascading Failure Warning:</strong> If the assisted player <strong>fails or busts</strong>, the consequences strike everyone involved! <strong>All helping players suffer the obstacle's full Counterattack</strong>, and the <strong>Tension Die steps up by one tier for EVERY aiding player</strong> (in addition to the tier increase from the failed active roll).
+                </div>
+
+                <!-- TACTICAL BONUSES GRID -->
+                <div class="bonus-grid">
+                    <div class="bonus-card">
+                        <div class="bonus-card-title">1. Bust Insurance (Reroll on Bust)</div>
+                        If the sequential roll exceeds 21, the active player may immediately discard the busting die and roll once more to stay in the game.
+                    </div>
+                    <div class="bonus-card">
+                        <div class="bonus-card-title">2. Threshold Reduction</div>
+                        Lowers the target Obstacle Difficulty Threshold by one complete step for this attempt (e.g., <strong>20+ &rarr; 17+</strong>, or <strong>17+ &rarr; 14+</strong>).
+                    </div>
+                    <div class="bonus-card">
+                        <div class="bonus-card-title">3. Devastating Impact (Damage Reroll)</div>
+                        After successfully overcoming the obstacle, the player may reroll all damage dice to maximize final damage dealt to the pool.
+                    </div>
+                    <div class="bonus-card">
+                        <div class="bonus-card-title">4. Competence Shift (Better Die)</div>
+                        The active player may step up their rolling die by one competence tier for this check (e.g., upgrade <strong>d20 &rarr; d12</strong> or <strong>d10 &rarr; d8</strong>).
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">Blast or Bust TTRPG &bull; Module 2: Obstacle Generation &bull; Game Design: Federico Latini &bull; Layout: Antigravity</div>
+        </div>
+    </div>
+
+</body>
+</html>
