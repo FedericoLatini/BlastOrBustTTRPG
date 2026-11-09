@@ -1,0 +1,12 @@
+# Headless browser temporary profile & build files
+temp_edge_profile/
+temp_*.pdf
+*_latest.pdf
+
+# OS & Drive metadata
+desktop.ini
+.DS_Store
+Thumbs.db
+
+# Node dependencies
+node_modules/

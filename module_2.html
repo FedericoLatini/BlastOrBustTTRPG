@@ -440,13 +440,14 @@
             <span class="nav-sub">Blast or Bust &bull; Module 2</span>
         </div>
         <div class="nav-links">
-            <a href="core_rules.html">Core Rules (Module 0)</a>
-            <a href="module_1.html">Module 1 (Characters)</a>
-            <a href="#page-1">Obstacle Generation</a>
-            <a href="#page-2">The Tension Engine</a>
+            <a href="index.html">Hub</a>
+            <a href="core_rules.html">Core (Mod 0)</a>
+            <a href="module_1.html">Mod 1 (Chars)</a>
+            <a href="module_2.html" style="color: #fff; border-bottom: 2px solid var(--brand-red);">Mod 2 (Obstacles)</a>
+            <a href="campaign_ash_casket.html">Campaign</a>
         </div>
         <div class="nav-actions">
-            <a href="Blast_or_Bust_Module_2_EN.pdf" download class="nav-btn nav-btn-primary">Download PDF</a>
+            <a href="pdf/Blast_or_Bust_Module_2_EN.pdf" download class="nav-btn nav-btn-primary">Download PDF</a>
             <button onclick="window.print()" class="nav-btn nav-btn-secondary">Print Manual</button>
         </div>
     </nav>
@@ -458,7 +459,7 @@
             <h1>Blast or Bust<br><span style="font-size: 10pt; letter-spacing: 3px; font-weight: 400;">Module 2: Obstacle Generation</span></h1>
             
             <div class="hero-banner">
-                <img src="tesb_landscape.jpg" alt="The Desolate Ash Wastes of Ten Earth Shattering Blows">
+                <img src="assets/img/core/tesb_landscape.jpg" alt="The Desolate Ash Wastes of Ten Earth Shattering Blows">
             </div>
 
             <p><span class="dropcap">W</span>hen the Referee needs an immediate challenge for the party, roll <strong>one die of each polyhedral tier</strong> (1d4, 1d6, 1d8, 1d10, 1d12, and 1d20) in a single throw. In seconds, this generates the obstacle's Difficulty Threshold, evocative form, required Attributes, retaliatory Counterattack, and Health Pool.</p>
@@ -545,7 +546,7 @@
                     <div class="box" style="background: #fff; border: 1px solid #111; margin-top: 4px;">
                         <div class="box-title">Instant Roll Example</div>
                         <p style="margin: 0; font-size: 7.4pt;"><strong>Dice Roll:</strong> 1d4 [2: 17+] &bull; 1d6 [5: Dusted] &bull; 1d8 [2: Guardian] &bull; 1d10 [7: COS + WIT] &bull; 1d12 [8: Disarm] &bull; 1d20 [14: 24 HP].<br>
-                        <strong>Narrative Translation:</strong> A <em>Dusted Guardian</em> (ancient stone colossus half-buried in the white dunes). Hard Threshold <strong>17+</strong> with <strong>24 HP</strong>. To defeat it, characters must endure its toxic choking plumes (<strong>COS</strong>) or outmaneuver its blind swings (<strong>WIT</strong>). If a character Busts, its pneumatic sweep knocks their weapon away!</p>
+                        <strong>Narrative Translation:</strong> A <em>Dusted Guardian</em> (ancient stone colossus half-buried in the white dunes). Hard Threshold <strong>17+</strong> with <strong>24 HP</strong>. To defeat it, characters must endure its toxic choking plumes (<strong>COS</strong>) or outmaneuver its blind swings (<strong>WIT</strong>). If it survives the turn (or a character Busts), its pneumatic sweep knocks their weapon away!</p>
                     </div>
                 </div>
 
@@ -576,8 +577,8 @@
                     </div>
 
                     <!-- 1d12: COUNTERATTACK & COMPLICATION MATRIX -->
-                    <h3 style="margin-top: 6px; margin-bottom: 2px;">The Complication & Counterattack Matrix (1d12)</h3>
-                    <p style="font-size: 7.4pt; margin-bottom: 4px; font-style: italic; color: #444;">When a character <strong>Busts</strong> against the obstacle, it inflicts this lethal reaction:</p>
+                    <h3 style="margin-top: 6px; margin-bottom: 2px;">The Complication &amp; Counterattack Matrix (1d12)</h3>
+                    <p style="font-size: 7.4pt; margin-bottom: 4px; font-style: italic; color: #444;">When the obstacle <strong>survives a turn with HP &gt; 0</strong> (or when a character <strong>Busts</strong>), it inflicts this lethal reaction:</p>
 
                     <table class="table-custom" style="margin-top: 2px; font-size: 7.3pt;">
                         <thead>
@@ -709,7 +710,7 @@
 
                 <!-- HIGH STAKES RISK CALLOUT -->
                 <div style="background: #fff0f0; border: 1px solid #d9534f; padding: 4px 7px; margin-bottom: 5px; font-size: 7.3pt; border-radius: 2px;">
-                    <strong style="color: #b71c1c; font-family: 'Cinzel', serif;">The Cascading Failure Warning:</strong> If the assisted player <strong>fails or busts</strong>, the consequences strike everyone involved! <strong>All helping players suffer the obstacle's full Counterattack</strong>, and the <strong>Tension Die steps up by one tier for EVERY aiding player</strong> (in addition to the tier increase from the failed active roll).
+                    <strong style="color: #b71c1c; font-family: 'Cinzel', serif;">The Cascading Failure Warning:</strong> If the obstacle <strong>survives the turn (or the active player Busts)</strong>, <strong>all helping players also suffer the obstacle's full Counterattack</strong>! Furthermore, on a <strong>Bust (&gt; 21)</strong>, the <strong>Tension Die steps up by one tier for EVERY aiding player</strong> (in addition to the tier increase from the active player's Bust).
                 </div>
 
                 <!-- TACTICAL BONUSES GRID -->
@@ -724,7 +725,7 @@
                     </div>
                     <div class="bonus-card">
                         <div class="bonus-card-title">3. Devastating Impact (Damage Reroll)</div>
-                        After successfully overcoming the obstacle, the player may reroll all damage dice to maximize final damage dealt to the pool.
+                        On a successful hit (Step 3: Damage Roll), the player may reroll all damage dice to maximize final damage dealt to the Obstacle's HP.
                     </div>
                     <div class="bonus-card">
                         <div class="bonus-card-title">4. Competence Shift (Better Die)</div>

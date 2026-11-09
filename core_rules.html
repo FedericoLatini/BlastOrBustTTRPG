@@ -519,18 +519,16 @@
             <span class="nav-sub">Blast or Bust &bull; Module 0</span>
         </div>
         <div class="nav-links">
-            <a href="#page-1">Core Engine</a>
-            <a href="#page-2">Resolution</a>
-            <a href="#page-3">Intro Adventure</a>
-            <a href="#page-4">Referee Screen</a>
-            <a href="#page-5">Recruits 1-2</a>
-            <a href="#page-6">Recruits 3-4</a>
-            <a href="#page-7">Recruits 5-6</a>
+            <a href="index.html">Hub</a>
+            <a href="core_rules.html" style="color: #fff; border-bottom: 2px solid var(--brand-red);">Core (Mod 0)</a>
+            <a href="module_1.html">Mod 1 (Chars)</a>
+            <a href="module_2.html">Mod 2 (Obstacles)</a>
+            <a href="campaign_ash_casket.html">Campaign</a>
         </div>
         <div class="nav-actions">
             <a href="module_1.html" class="nav-btn" style="background:#d4af37; color:#111;">Mod 1</a>
             <a href="module_2.html" class="nav-btn" style="background:#8b2510; color:#fff;">Mod 2 &rarr;</a>
-            <a href="Blast_or_Bust_Core_Rules_EN.pdf" download class="nav-btn nav-btn-primary">Download PDF</a>
+            <a href="pdf/Blast_or_Bust_Core_Rules_EN.pdf" download class="nav-btn nav-btn-primary">Download PDF</a>
             <button onclick="window.print()" class="nav-btn nav-btn-secondary">Print</button>
         </div>
     </nav>
@@ -543,7 +541,7 @@
                 <h1>Blast or Bust<br><span style="font-size: 11pt; letter-spacing: 3px; font-weight: 400;">Module 0: Core Rules</span></h1>
                 
                 <div class="hero-frame">
-                    <img src="tesb_warrior.jpg" alt="Warrior of the Ash Wastes" class="hero-illustration">
+                    <img src="assets/img/core/tesb_warrior.jpg" alt="Warrior of the Ash Wastes" class="hero-illustration">
                 </div>
 
                 <div class="grid-2col">
@@ -567,7 +565,7 @@
                                 <li><strong>Difficulty Threshold:</strong> The minimum total sum required to score a hit. Low (14+), Medium (17+), Severe (20+).</li>
                                 <li><strong>Permitted Attributes:</strong> The Referee assigns 1 Physical and 1 Mental attribute viable for the task.</li>
                                 <li><strong>Health Pool (HP):</strong> Minor hazard (10-15 HP), Serious confrontation (20-30 HP), Apex threat (40-60+ HP).</li>
-                                <li><strong>Counterattack:</strong> What the obstacle does when players Bust or hesitate (Direct damage, lost gear, toxic exposure).</li>
+                                <li><strong>Counterattack:</strong> What the obstacle inflicts at the end of your turn if it is still alive, or when you Bust (Direct damage, lost gear, toxic exposure).</li>
                             </ol>
                         </div>
 
@@ -586,7 +584,7 @@
         <div class="page">
             <div class="page-content">
                 <div class="landscape-frame">
-                    <img src="tesb_landscape.jpg" alt="The Desolate Wastes" class="landscape-illustration">
+                    <img src="assets/img/core/tesb_landscape.jpg" alt="The Desolate Wastes" class="landscape-illustration">
                 </div>
 
                 <div class="grid-2col">
@@ -650,24 +648,25 @@
                         </div>
 
                         <h3>Conflict Resolution Sequence</h3>
-                        <p>When acting against an obstacle, players execute this sequence:</p>
+                        <p>When acting against an Obstacle, execute this 4-step sequence:</p>
                         <ol>
-                            <li><strong>Declare Approach:</strong> Select an allowed Physical or Mental attribute matching your tactic.</li>
-                            <li><strong>Chain Rolls:</strong> Roll your Attribute Die. Record the sum. Continue rolling additional dice of that type until you meet or exceed the <strong>Difficulty Threshold</strong>.</li>
-                            <li><strong>Push or Hold:</strong> Once the threshold is met, you may choose to stop and strike, or risk rolling more dice to accumulate heavier damage—until you bust (&gt; 21).</li>
+                            <li><strong>Declare Approach:</strong> Select either the Physical or Mental Attribute permitted by the Obstacle.</li>
+                            <li><strong>Sequential Dice Rolling:</strong> Roll your designated Attribute Die repeatedly, accumulating the sum. You must continue rolling additional dice until your total equals or exceeds the <strong>Difficulty Threshold</strong>. Once met, choose whether to stop or push your luck further without busting (&gt; 21).</li>
+                            <li><strong>Damage Roll:</strong> On a success, collect all dice rolled in that sequence and reroll all of them: the sum of all results is the total damage dealt to the Obstacle's HP.</li>
+                            <li><strong>Counterattack:</strong> Now, <strong>if the Obstacle is still alive (HP &gt; 0), you suffer the Obstacle's Counterattack!</strong></li>
                         </ol>
 
                         <div class="box">
-                            <h3 class="box-title">The Rule of 21: Roll Outcomes</h3>
-                            <p><strong>Success (Threshold to 21):</strong> Sunder the obstacle's HP and negate its Counterattack for this round.</p>
-                            <p><strong>Bust (&gt; 21 - Overreach):</strong> Critical failure! Deal 0 damage and immediately suffer the obstacle's Counterattack.</p>
-                            <p><strong>Natural 21 (Epic Strike):</strong> Total mastery. Roll maximum damage automatically, or trigger a dramatic environmental twist.</p>
+                            <h3 class="box-title">The Rule of 21: Step 2 Outcomes</h3>
+                            <p><strong>Threshold Success (Landing within [Threshold &ndash; 20]):</strong> You may stop rolling and choose to do so: deal damage to the Obstacle's HP. <em>Go to Step 3.</em></p>
+                            <p><strong>Natural Success 21:</strong> Critical Success! The GM grants an Epic Outcome: deal maximum possible damage, gain an immediate tactical advantage, or negotiate a dramatic narrative effect. <em>Go to Step 3.</em></p>
+                            <p><strong>Bust (&gt; 21):</strong> Failure! Deal 0 damage. <em>Go to Step 4.</em></p>
                         </div>
                     </div>
                     <div>
-                        <h2 style="margin-top: 0;">Damage & Support</h2>
-                        <p>On a successful strike, <strong>gather all dice rolled</strong> in that turn's chain and <strong>reroll them together</strong>: their sum is subtracted directly from the obstacle's HP pool.</p>
-                        <p><em>Smaller dice grant granular control</em>, allowing players to stack 4 or 5 dice safely before nearing 21. When rerolled for damage, these multiple dice yield crushing totals!</p>
+                        <h2 style="margin-top: 0;">Damage, Counterattack &amp; Support</h2>
+                        <p>Stopping as soon as you meet the Threshold guarantees a <strong>Damage Roll (Step 3)</strong>, <em>but if your damage does not reduce the Obstacle to 0 HP, it still strikes you back in Step 4!</em></p>
+                        <p><em>Smaller dice grant granular control</em>, letting you push closer to 21 to stack 4 or 5 dice safely—giving your Damage Roll the firepower to slay the Obstacle in one blow and avoid its Counterattack altogether.</p>
                         
                         <div class="box">
                             <h3 class="box-title">The Support Action</h3>
@@ -700,7 +699,7 @@
                 <p style="text-align: center; font-size: 9pt; font-style: italic; margin-bottom: 10px; color: #444;">Survivors of the White Ash Wastes: a scorching midday sun rises to flay the flesh from your bones. Your only salvation looms on the scorched horizon: the Well-Fortress, a brutalist bastion of rusted iron and desperate violence.</p>
                 
                 <div class="adv-scene">
-                    <img src="tesb_scene_1.jpg" alt="Racing the Sun">
+                    <img src="assets/img/core/tesb_scene_1.jpg" alt="Racing the Sun">
                     <div class="adv-text">
                         <h3>Act I: Racing the Sun</h3>
                         <p>Incandescent dawn crests behind you, turning air into searing poison. You must sprint through the gorge toward the fortress shadow, dodging boiling acid geysers and unstable Old World concrete slabs buried under ash.</p>
@@ -722,11 +721,11 @@
                             <strong>Counterattack:</strong> Cruel Bastion. Beaten back or scalded by boiling slag: 1d6 damage (player chooses HP or MP).
                         </div>
                     </div>
-                    <img src="tesb_scene_2.jpg" alt="The Maw of the Bastion">
+                    <img src="assets/img/core/tesb_scene_2.jpg" alt="The Maw of the Bastion">
                 </div>
 
                 <div class="adv-scene">
-                    <img src="tesb_scene_3.jpg" alt="The Mud Rite">
+                    <img src="assets/img/core/tesb_scene_3.jpg" alt="The Mud Rite">
                     <div class="adv-text">
                         <h3>Act III: The Mud Rite</h3>
                         <p>You have earned the "privilege" to fight for sanctuary. Shoved through iron grates into a sunken arena flooded with viscous mud and blood, the pit gate creaks open. Out lumbers the Pit Champion: a towering horror bolted into crude bone plating.</p>
@@ -755,42 +754,43 @@
                 
                 <!-- PANEL 1: RULE OF 21 & RESOLUTION -->
                 <div class="gm-panel">
-                    <div class="gm-panel-header">I &bull; The Rule of 21 & Resolution</div>
+                    <div class="gm-panel-header">I &bull; The Rule of 21 &amp; Resolution</div>
                     
                     <div class="gm-block">
                         <div class="gm-block-title">Turn Sequence (All is Combat)</div>
                         <ol style="padding-left: 14px; margin: 2px 0;">
-                            <li><strong>Declare Approach:</strong> Pick an allowed attribute (1 Physical or 1 Mental).</li>
-                            <li><strong>Chain Rolls:</strong> Roll attribute die and sum total. Continue rolling until you reach or beat the <strong>Difficulty Threshold</strong>.</li>
-                            <li><strong>Push Your Luck:</strong> Once past threshold: hold and strike, or risk rolling additional dice for bigger damage. Over 21 is a Bust!</li>
+                            <li><strong>Declare Approach:</strong> Select either the Physical or Mental Attribute permitted by the Obstacle.</li>
+                            <li><strong>Sequential Dice Rolling:</strong> Roll your Attribute Die repeatedly, accumulating the sum until you equal or exceed the <strong>Difficulty Threshold</strong>. Then choose to stop or push further without busting (&gt; 21).</li>
+                            <li><strong>Damage Roll:</strong> On a success, collect all dice rolled in that sequence and reroll all of them: their sum is total damage dealt to Obstacle HP.</li>
+                            <li><strong>Counterattack:</strong> Now, <strong>if the Obstacle is still alive (HP &gt; 0)</strong>, suffer the Obstacle's Counterattack!</li>
                         </ol>
                     </div>
 
                     <div class="gm-block">
-                        <div class="gm-block-title">Roll Outcomes</div>
+                        <div class="gm-block-title">Step 2 Roll Outcomes</div>
                         <table class="gm-table">
                             <tr>
                                 <th>Result</th>
                                 <th>Mechanical Effect</th>
                             </tr>
                             <tr>
-                                <td><strong>Success<br>(Threshold &rarr; 21)</strong></td>
-                                <td>Hit threshold and hold. Deal damage to obstacle HP and <strong>cancel its Counterattack</strong> this round.</td>
+                                <td><strong>Threshold Success<br>[Threshold &ndash; 20]</strong></td>
+                                <td>Stop rolling and deal damage to the Obstacle's HP. <strong>Go to Step 3</strong> (then Step 4 if Obstacle survives).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Natural 21<br>(Critical)</strong></td>
+                                <td><strong>Epic Outcome!</strong> Deal max possible damage, gain immediate tactical advantage, or negotiate a dramatic narrative effect. <strong>Go to Step 3.</strong></td>
                             </tr>
                             <tr>
                                 <td><strong>Bust<br>(&gt; 21)</strong></td>
-                                <td>Critical fail. Deal <strong>0 damage</strong> and immediately suffer the obstacle's <strong>Counterattack</strong>.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Natural 21<br>(Epic)</strong></td>
-                                <td>Flawless triumph! Maximum possible damage rolled automatically, or trigger massive tactical breakthrough.</td>
+                                <td>Failure! Deal <strong>0 damage</strong>. <strong>Go to Step 4</strong> (immediately suffer the Obstacle's Counterattack).</td>
                             </tr>
                         </table>
                     </div>
 
                     <div class="gm-block">
-                        <div class="gm-block-title">Damage & Support</div>
-                        <p style="margin: 2px 0;"><strong>Damage:</strong> Gather <em>all dice rolled</em> in that chain and <strong>reroll them together</strong>. Sum is subtracted from obstacle HP.</p>
+                        <div class="gm-block-title">Tactical Push &amp; Support</div>
+                        <p style="margin: 2px 0;"><strong>Why Push?</strong> Chipping away with few dice leaves the Obstacle alive to Counterattack in Step 4. Stacking dice toward 21 lets you slay it in one blow!</p>
                         <p style="margin: 2px 0;"><strong>Support:</strong> Ally spends turn helping. If active player <em>Busts (&gt;21)</em>, <strong>instantly discard the last die rolled</strong>: resume from prior total!</p>
                     </div>
                 </div>
@@ -911,7 +911,7 @@
                     <!-- WARRIOR -->
                     <div class="cs-card-large">
                         <div class="cs-card-image">
-                            <img src="tesb_char_guerriero.jpg" alt="Warrior">
+                            <img src="assets/img/characters/tesb_char_guerriero.jpg" alt="Warrior">
                         </div>
                         <div class="cs-card-content">
                             <div class="cs-header">
@@ -1056,7 +1056,7 @@
                     <!-- SCOUT -->
                     <div class="cs-card-large">
                         <div class="cs-card-image">
-                            <img src="tesb_char_scout.jpg" alt="Scout">
+                            <img src="assets/img/characters/tesb_char_scout.jpg" alt="Scout">
                         </div>
                         <div class="cs-card-content">
                             <div class="cs-header">
@@ -1211,7 +1211,7 @@
                     <!-- KNIGHT -->
                     <div class="cs-card-large">
                         <div class="cs-card-image">
-                            <img src="tesb_char_cavaliere.jpg" alt="Knight">
+                            <img src="assets/img/characters/tesb_char_cavaliere.jpg" alt="Knight">
                         </div>
                         <div class="cs-card-content">
                             <div class="cs-header">
@@ -1350,7 +1350,7 @@
                     <!-- CLERIC -->
                     <div class="cs-card-large">
                         <div class="cs-card-image">
-                            <img src="tesb_char_chierico.jpg" alt="Cleric">
+                            <img src="assets/img/characters/tesb_char_chierico.jpg" alt="Cleric">
                         </div>
                         <div class="cs-card-content">
                             <div class="cs-header">
@@ -1503,7 +1503,7 @@
                     <!-- ARCANIST -->
                     <div class="cs-card-large">
                         <div class="cs-card-image">
-                            <img src="tesb_char_arcano.jpg" alt="Arcanist">
+                            <img src="assets/img/characters/tesb_char_arcano.jpg" alt="Arcanist">
                         </div>
                         <div class="cs-card-content">
                             <div class="cs-header">
@@ -1638,7 +1638,7 @@
                     <!-- NOBLE -->
                     <div class="cs-card-large">
                         <div class="cs-card-image">
-                            <img src="tesb_char_nobile.jpg" alt="Noble">
+                            <img src="assets/img/characters/tesb_char_nobile.jpg" alt="Noble">
                         </div>
                         <div class="cs-card-content">
                             <div class="cs-header">

@@ -1,1 +1,0 @@
-document.documentElement.setAttribute("data-extension-platform","safari"),sessionStorage.setItem("extensionVersion",chrome.runtime.getManifest().version);

@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blast or Bust - Campaign: The Ash-Casket of Oasis-Nine</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cinzel:wght@400;600;700;900&family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --accent-color: #111111;
+            --brand-red: #c94025;
+            --brand-red-dark: #8b2510;
+            --gold-accent: #c49a2c;
+            --parchment-border: #2b2620;
+            --box-bg: #f9f7f2;
+            --box-border: #e2ddd0;
+            --box-highlight: #fdf6e2;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        @page { size: A4 portrait; margin: 8mm; }
+
+        body {
+            color: var(--text-color);
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 8.5pt;
+            line-height: 1.36;
+            margin: 0; 
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        /* WEB READER TOOLBAR */
+        .web-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: #111111;
+            border-bottom: 2px solid var(--brand-red);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            font-family: 'Cinzel', serif;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 10pt;
+            letter-spacing: 1px;
+        }
+        .nav-brand a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .nav-brand a:hover { color: var(--brand-red); }
+        .nav-brand .nav-sep { color: #555; }
+        .nav-brand .nav-sub { color: #aaa; font-size: 8.5pt; text-transform: uppercase; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 8pt;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+        }
+        .nav-links a.active {
+            border-bottom: 2px solid var(--brand-red);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            font-family: 'Cinzel', serif;
+            font-size: 8pt;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav-btn-primary {
+            background: var(--brand-red);
+            color: #fff;
+            border: 1px solid #e04a2d;
+        }
+        .nav-btn-primary:hover {
+            background: #e04a2d;
+            box-shadow: 0 2px 10px rgba(201, 64, 37, 0.4);
+        }
+        .nav-btn-secondary {
+            background: transparent;
+            color: #eee;
+            border: 1px solid #555;
+        }
+        .nav-btn-secondary:hover {
+            background: #222;
+            color: #fff;
+            border-color: #888;
+        }
+
+        /* SCREEN VIEW: DOCUMENT VIEWER */
+        @media screen {
+            body {
+                background-color: #141414;
+                background-image: radial-gradient(#222 1px, transparent 1px);
+                background-size: 24px 24px;
+                padding: 72px 15px 50px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 32px;
+            }
+
+            .page-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .page-badge {
+                font-family: 'Cinzel', serif;
+                font-size: 8pt;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: #888;
+                background: #111;
+                padding: 4px 14px;
+                border: 1px solid #333;
+                border-radius: 20px;
+                margin-bottom: 8px;
+            }
+
+            .page {
+                width: 210mm;
+                max-width: 95vw;
+                min-height: 297mm;
+                background-color: #ffffff;
+                box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+                padding: 8mm 10mm;
+                border-radius: 2px;
+                position: relative;
+                box-sizing: border-box;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            .web-nav, .page-badge { display: none !important; }
+            body { background-color: #ffffff; margin: 0; padding: 0; }
+            .page-container { margin: 0; padding: 0; }
+            .page {
+                height: 277mm;
+                width: 100%;
+                break-after: page;
+                page-break-after: always;
+                padding: 6mm 8mm;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            .page:last-child {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+        }
+
+        /* TYPOGRAPHY & ELEMENTS */
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', serif;
+            margin: 0 0 6px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.15;
+        }
+
+        .header-title-bar {
+            text-align: center;
+            border-bottom: 2px solid var(--parchment-border);
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .header-title-bar .super {
+            font-family: 'Cinzel', serif;
+            font-size: 7.5pt;
+            letter-spacing: 3px;
+            color: var(--brand-red);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .header-title-bar h1 {
+            font-size: 16pt;
+            letter-spacing: 2px;
+            margin: 2px 0;
+            color: #111;
+        }
+        .header-title-bar .sub {
+            font-size: 7.8pt;
+            font-style: italic;
+            color: #555;
+        }
+
+        .section-header {
+            background: #111;
+            color: #fff;
+            padding: 4px 8px;
+            font-family: 'Cinzel', serif;
+            font-size: 8.5pt;
+            letter-spacing: 1.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0 6px;
+            border-left: 3px solid var(--brand-red);
+        }
+        .section-header span.tag {
+            font-size: 7pt;
+            color: var(--gold-accent);
+            letter-spacing: 1px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .scene-card {
+            border: 1px solid var(--box-border);
+            background: var(--box-bg);
+            border-radius: 2px;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        .scene-card-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            border-bottom: 1px solid #d0c8b6;
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+        }
+        .scene-card-header h3 {
+            font-size: 9.5pt;
+            color: #111;
+            margin: 0;
+        }
+        .scene-badge {
+            font-family: 'Cinzel', serif;
+            font-size: 6.8pt;
+            padding: 1px 6px;
+            background: #2b2620;
+            color: #fff;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .scene-img-box {
+            position: relative;
+            margin: 6px 0 8px 0;
+            border: 1px solid #222;
+            overflow: hidden;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .scene-img-box img {
+            width: 100%;
+            height: 195px;
+            object-fit: cover;
+            display: block;
+        }
+        .page-6 .scene-img-box img {
+            height: 125px;
+        }
+        .scene-img-caption {
+            font-family: 'Cinzel', serif;
+            font-size: 6.5pt;
+            background: rgba(17, 17, 17, 0.92);
+            color: #ddd;
+            padding: 3px 8px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #444;
+            letter-spacing: 0.5px;
+        }
+
+        .read-aloud {
+            background: #fdfaf3;
+            border-left: 3px solid var(--brand-red);
+            border-top: 1px solid #e8e2d2;
+            border-right: 1px solid #e8e2d2;
+            border-bottom: 1px solid #e8e2d2;
+            padding: 6px 9px;
+            font-style: italic;
+            font-size: 7.8pt;
+            line-height: 1.34;
+            margin: 6px 0;
+            color: #2c251e;
+        }
+        .read-aloud::before {
+            content: "“ ";
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            color: var(--brand-red);
+            font-size: 11pt;
+            line-height: 0;
+        }
+
+        .statblock {
+            background: #ffffff;
+            border: 1px solid #c8bead;
+            border-top: 2px solid #222;
+            padding: 6px 8px;
+            margin: 6px 0;
+            font-size: 7.7pt;
+        }
+        .statblock-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 8.2pt;
+            color: var(--brand-red-dark);
+            border-bottom: 1px solid #e2ddd0;
+            padding-bottom: 2px;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .stat-meta {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 7.2pt;
+            color: #444;
+            margin-bottom: 4px;
+        }
+        .stat-badge {
+            background: #eee;
+            padding: 1px 4px;
+            border-radius: 2px;
+            border: 1px solid #ccc;
+            margin-right: 4px;
+            font-weight: bold;
+        }
+
+        .clue-box {
+            background: #f4f6fa;
+            border-left: 3px solid #2a5298;
+            border-top: 1px solid #d8dfeb;
+            border-right: 1px solid #d8dfeb;
+            border-bottom: 1px solid #d8dfeb;
+            padding: 5px 8px;
+            font-size: 7.6pt;
+            margin: 6px 0;
+        }
+        .clue-box strong {
+            font-family: 'Cinzel', serif;
+            color: #1e3c72;
+            font-size: 7.6pt;
+        }
+
+        .referee-box {
+            background: #fff8f5;
+            border-left: 3px solid var(--brand-red);
+            border: 1px solid #f0d5cc;
+            border-left-width: 3px;
+            padding: 5px 8px;
+            font-size: 7.6pt;
+            margin: 6px 0;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 7.4pt;
+            margin: 6px 0;
+        }
+        .table-custom th, .table-custom td {
+            border: 1px solid #d0c8b6;
+            padding: 3px 6px;
+            text-align: left;
+        }
+        .table-custom th {
+            background: #2b2620;
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-size: 7.2pt;
+            letter-spacing: 0.5px;
+        }
+        .table-custom tr:nth-child(even) { background: #faf8f2; }
+
+        .footer-rule {
+            margin-top: 8px;
+            border-top: 1px solid #ccc;
+            padding-top: 4px;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Cinzel', serif;
+            font-size: 6.8pt;
+            color: #777;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- WEB TOP NAVIGATION -->
+    <header class="web-nav">
+        <div class="nav-brand">
+            <a href="index.html">BLAST OR BUST</a>
+            <span class="nav-sep">/</span>
+            <span class="nav-sub">Campaign: The Ash-Casket</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Hub</a>
+            <a href="core_rules.html">Module 0: Core</a>
+            <a href="module_1.html">Module 1: Archetypes</a>
+            <a href="module_2.html">Module 2: Obstacles</a>
+            <a href="campaign_ash_casket.html" class="active">Campaign</a>
+        </nav>
+        <div class="nav-actions">
+            <button class="nav-btn nav-btn-secondary" onclick="window.print()">Print</button>
+            <a href="pdf/Blast_or_Bust_Campaign_Ash_Casket_EN.pdf" download class="nav-btn nav-btn-primary">Download PDF</a>
+        </div>
+    </header>
+
+    <!-- PAGE 1: TITLE & REFEREE BRIEFING -->
+    <div class="page-container">
+        <div class="page-badge">Page 1 of 6 &bull; Campaign Briefing & Lore</div>
+        <div class="page">
+            <div class="header-title-bar">
+                <div class="super">Blast or Bust TTRPG &bull; Wasteland Campaign Adventure</div>
+                <h1>THE ASH-CASKET OF OASIS-NINE</h1>
+                <div class="sub">A 3-Session Arc for 4–5 Adventurers &bull; Lore Adaptation: Federico Latini &bull; Inspired by <em>Ten Earth Shattering Blows</em></div>
+            </div>
+
+            <div class="two-col">
+                <div>
+                    <div class="section-header">
+                        <span>💀 The Premise & The Contract</span>
+                        <span class="tag">Referee Only</span>
+                    </div>
+                    <p>The adventuring party is convened at the subterranean caldera town of <strong>Kiln-Hearth</strong> by the gilded emissaries of <strong>Oasis-Nine</strong>. Their contract: escort a hermetically sealed porcelain reliquary known as <strong>The White Casket</strong> across the deadly Great Alkali Trench.</p>
+                    <p>According to <strong>High Prelate Orhan</strong>, the Casket preserves <strong>Lady Sula</strong>, the last uncontaminated maiden of pure blood. Untouched by the ash plague, her holy spirit is to perform the <em>Rite of Rain</em> in Oasis-Nine to awaken the eternal springs. The party is bound by an absolute occult taboo: <strong>The Casket must never be unsealed beneath the open sky</strong>, or the ambient ash-curse will dissolve her consecrated flesh within seconds.</p>
+
+                    <div class="section-header">
+                        <span>🌪️ The Grand Twist (The Reality)</span>
+                        <span class="tag">Crucial Reveal</span>
+                    </div>
+                    <div class="referee-box">
+                        <strong style="color:var(--brand-red); font-family:'Cinzel', serif;">1. The Maiden Myth:</strong> There is no girl inside the reliquary. The story of the fragile pureblood maiden is a cynical fraud invented to ensure honorable mercenaries will sacrifice their lives to protect it.<br>
+                        <strong style="color:var(--brand-red); font-family:'Cinzel', serif;">2. The Soul-Crucible:</strong> Inside rests <strong>The Anima-Still (Model IX)</strong>. It is a predatory arcanotech apparatus: it does not pray for water—<strong>it consumes living human souls to transmute barren ash into drinking water</strong> for the Oasis-Nine oligarchy.<br>
+                        <strong style="color:var(--brand-red); font-family:'Cinzel', serif;">3. The Nemesis Was Right:</strong> <strong>Varek the Faceless</strong> is not a child-murderer. He is a former temple paladin whose daughter was sacrificed into the previous crucible. He hunts the party to shatter the machine before another generation of children is devoured.
+                    </div>
+                </div>
+
+                <div>
+                    <div class="section-header">
+                        <span>🎭 Dramatis Personae & Voice Pillars</span>
+                        <span class="tag">NPC Guidelines</span>
+                    </div>
+                    <p><strong>High Prelate Orhan (Sovereign of Wells):</strong> Floor-length white silks embroidered with spun aurichalcum thread; wears a smiling porcelain mask inlaid with lapis lazuli. Soft-spoken, courtly, chillingly pragmatic. Treats industrial soul-harvesting as simple civic arithmetic.<br>
+                    <em>“Nature abandoned this world to dust a millennium ago. We harvest the mud-dwellers so that nobility, intellect, and beauty may endure.”</em></p>
+                    
+                    <p><strong>Varek the Faceless (The Broken Paladin):</strong> Seven feet tall, armored in pitted soul-iron plate forged with weeping faces. Welded five-horned iron helm without eye-slits; perceives occult soul auras. Wields a colossal runic executioner greatsword trailing pale-blue corpse flame. Speaks like stones grinding in an iron churn.<br>
+                    <em>“You carried a slaughterhouse upon your backs across the wastes, and you called it devotion. If your eyes are blind, my blade will open them.”</em></p>
+
+                    <p><strong>Envoy Caelen (The Silk Broker):</strong> Slender courier wearing a porcelain weeping-angel mask with gilded tears. Carries an ivory ledger and speaks with nervous, fluttering obsequiousness.</p>
+
+                    <div class="section-header">
+                        <span>🗺️ 3-Session Campaign Roadmap</span>
+                        <span class="tag">10 Scenes</span>
+                    </div>
+                    <div style="font-family:'Share Tech Mono', monospace; font-size:7.2pt; background:#f5f3ec; padding:6px 8px; border:1px solid #dcd7ca;">
+                        SESSION 1: THE WHITE CHASM (Exploration & Nature)<br>
+                        ├── Sc. 1: The Contract at Kiln-Hearth (Vow & Reliquary)<br>
+                        ├── Sc. 2: The Screaming Sirocco (Force of Nature: Glass Storm)<br>
+                        ├── Sc. 3: The Sinking Span (Collapsing Bridge & Saurs)<br>
+                        └── Sc. 4: The Stalker in the Ash (First Brush with Varek)<br><br>
+                        SESSION 2: THE IRON BASIN (Hazards & Lore)<br>
+                        ├── Sc. 5: The Alkali Sinks (Force of Nature: Boiling Lye)<br>
+                        ├── Sc. 6: Ambush in Siphon Canyon (Kiln-Scrap Cult)<br>
+                        └── Sc. 7: Tomb of the Stone Colossus (Ancient Titan Vault)<br><br>
+                        SESSION 3: CITADEL & THE TWIST (Climax & Moral Choice)<br>
+                        ├── Sc. 8: Blood upon Vitrified Ridge (Duel with Varek)<br>
+                        ├── Sc. 9: The Ivory Spire of Oasis-Nine (Gates & Blood Gutters)<br>
+                        └── Sc. 10: The Anima-Still Awakens (The Reveal & Revolt)
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-rule">
+                <span>Blast or Bust TTRPG &bull; Campaign Module: The Ash-Casket of Oasis-Nine</span>
+                <span>Page 1 / 6</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: SESSION 1 (SCENES 1 & 2) -->
+    <div class="page-container">
+        <div class="page-badge">Page 2 of 6 &bull; Session 1: The White Chasm</div>
+        <div class="page">
+            <div class="section-header">
+                <span>SESSION 1: THE WHITE CHASM &bull; SCENE 1 & 2</span>
+                <span class="tag">Departure & Force of Nature</span>
+            </div>
+
+            <div class="two-col">
+                <!-- SCENE 1 -->
+                <div class="scene-card">
+                    <div class="scene-card-header">
+                        <h3>Scene 1: Contract at Kiln-Hearth</h3>
+                        <span class="scene-badge">Scene 1 &bull; Exploration</span>
+                    </div>
+                    <div class="scene-img-box">
+                        <img src="assets/img/campaign/scene_1_kiln_hearth.jpg" alt="Scene 1: The Contract at Kiln-Hearth">
+                        <div class="scene-img-caption">
+                            <span>Kiln-Hearth Subterranean Vault</span>
+                            <span>The White Casket Presented</span>
+                        </div>
+                    </div>
+                    <div class="read-aloud">
+                        Kiln-Hearth chokes beneath an inverted volcanic caldera. In the private vault of the Black Amphora, Envoy Caelen's porcelain weeping-angel mask gleams in candle grease. Across the basalt trestle rests the six-foot White Casket, bound in warded bronze. A rhythmic pulse vibrates through the stone whenever touched. 'Four hundred leagues across the Alkali Trench,' Caelen whispers. 'Protect Lady Sula with your lives. Never unseal it beneath the sky.'
+                    </div>
+                    <div class="clue-box">
+                        <strong>Foreshadowing Clue #1 (Runic Inscriptions):</strong><br>
+                        Characters inspecting the bronze hoops (<strong>KNO 14+</strong>) realize the glyphs are <em>not</em> prayers of healing or bodily preservation. They are <strong>proto-sorcerous containment wards</strong> engineered to trap volatile spiritual essences.
+                    </div>
+                    <p style="margin:4px 0;"><strong>Departure:</strong> The party is given 2 ceramic water-chits each and deeds to terrace estates. As the toad-saurs haul the sled into the white wastes, place a <strong>d4 Tension Die</strong> at table center.</p>
+                </div>
+
+                <!-- SCENE 2 -->
+                <div class="scene-card">
+                    <div class="scene-card-header">
+                        <h3>Scene 2: The Screaming Sirocco</h3>
+                        <span class="scene-badge">Scene 2 &bull; Force of Nature</span>
+                    </div>
+                    <div class="scene-img-box">
+                        <img src="assets/img/campaign/scene_2_screaming_sirocco.jpg" alt="Scene 2: The Screaming Sirocco">
+                        <div class="scene-img-caption">
+                            <span>The Great Alkali Trench</span>
+                            <span>Catastrophic Glass Dust Gale</span>
+                        </div>
+                    </div>
+                    <div class="read-aloud">
+                        At noon on the fourth day, the sky turns the color of scorched copper. A metallic shriek rattles your teeth. From the north sweeps a five-hundred-foot wall of vitrified volcanic glass and white ash, chewing stone to powder. Your pack beasts bellow in terror as the sled begins to lift on the gale!
+                    </div>
+
+                    <div class="statblock">
+                        <div class="statblock-title">
+                            <span>OBSTACLE: THE SCREAMING SIROCCO</span>
+                            <span>Cataclysm</span>
+                        </div>
+                        <div class="stat-meta">
+                            <span class="stat-badge">Threshold: Hard (17+)</span>
+                            <span class="stat-badge">HP: 26</span>
+                            <span class="stat-badge">Clocks: 3 Ticks</span>
+                        </div>
+                        <p style="margin:2px 0;"><strong>Approaches:</strong> <strong>COS</strong> (bracing sled ropes, shielding mounts with cloaks and body weight) or <strong>WIT</strong> (discerning vortex eddies to steer into an undercut basalt cavern).</p>
+                        <p style="margin:2px 0; color:var(--brand-red-dark);"><strong>Counterattack (if Alive / on Bust):</strong> <em>Glass-Flayed Flesh</em>. Razor grit inflicts <strong>1d6 HP</strong> to actor and aiding allies (on a <strong>Bust</strong>, also step up Tension Die by 1 tier).</p>
+                        <p style="margin:2px 0;"><strong>Escalation Clock:</strong> Failed rounds add 1 tick. At 3 ticks, a pack strap snaps: lose 1 water chit or gear item into the abyss.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-rule">
+                <span>Blast or Bust TTRPG &bull; Campaign Module: The Ash-Casket of Oasis-Nine</span>
+                <span>Page 2 / 6</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: SESSION 1 (SCENES 3 & 4) -->
+    <div class="page-container">
+        <div class="page-badge">Page 3 of 6 &bull; Session 1: The White Chasm</div>
+        <div class="page">
+            <div class="section-header">
+                <span>SESSION 1: THE WHITE CHASM &bull; SCENE 3 & 4</span>
+                <span class="tag">Beast Encounter & Nemesis Brush</span>
+            </div>
+
+            <div class="two-col">
+                <!-- SCENE 3 -->
+                <div class="scene-card">
+                    <div class="scene-card-header">
+                        <h3>Scene 3: The Sinking Span</h3>
+                        <span class="scene-badge">Scene 3 &bull; Hazard & Beasts</span>
+                    </div>
+                    <div class="scene-img-box">
+                        <img src="assets/img/campaign/scene_3_chasm_bridge.jpg" alt="Scene 3: The Sinking Span of the Chasm">
+                        <div class="scene-img-caption">
+                            <span>The Broken Aqueduct Span</span>
+                            <span>Bone-Crested Carrion-Saurs</span>
+                        </div>
+                    </div>
+                    <div class="read-aloud">
+                        An eighty-foot chasm is crossed only by petrified timber flagstones suspended on colossal oxidized bronze chains. As the sled crosses, ancient timbers crack like gunshots. Drawn by the psychic hum of the Casket, three Bone-Crested Carrion-Saurs crawl up the sheer cliff face with snapping jaws!
+                    </div>
+
+                    <div class="statblock">
+                        <div class="statblock-title">
+                            <span>OBSTACLE: CRUMBLING SPAN & SAURS</span>
+                            <span>Hybrid</span>
+                        </div>
+                        <div class="stat-meta">
+                            <span class="stat-badge">Threshold: Mod (14+)</span>
+                            <span class="stat-badge">HP: 22</span>
+                        </div>
+                        <p style="margin:2px 0;"><strong>Approaches:</strong> <strong>STR / AGI</strong> (slashing saur tendons, leaping buckling spans) or <strong>KNO / PRE</strong> (re-tensioning bronze links via harmonic cantrips, roaring war-cries to terrify beasts).</p>
+                        <p style="margin:2px 0; color:var(--brand-red-dark);"><strong>Counterattack (if Alive / on Bust):</strong> <em>Snapping Link & Lunge</em>. A chain snaps; flying shrapnel deals <strong>1d8 HP damage</strong> and knocks character prone at the abyss edge.</p>
+                        <p style="margin:2px 0;"><strong>Aiding Rule:</strong> Perfect opportunity for players to sacrifice actions to lower threshold or grant rerolls!</p>
+                    </div>
+                </div>
+
+                <!-- SCENE 4 -->
+                <div class="scene-card">
+                    <div class="scene-card-header">
+                        <h3>Scene 4: The Stalker in the Ash</h3>
+                        <span class="scene-badge">Scene 4 &bull; Nemesis Duel</span>
+                    </div>
+                    <div class="scene-img-box">
+                        <img src="assets/img/campaign/scene_4_varek_stalker.jpg" alt="Scene 4: The Stalker in the Ash">
+                        <div class="scene-img-caption">
+                            <span>Petrified Leviathan Cranium</span>
+                            <span>Varek's Midnight Warning</span>
+                        </div>
+                    </div>
+                    <div class="read-aloud">
+                        Camp is pitched inside the hollow skull of a petrified desert leviathan. At midnight, ward-stones crack. Striding through the ash comes Varek the Faceless: seven feet of soot-blackened soul-iron plate with a five-horned blind helm. He drags a greatsword blazing with cold corpse-light. 'You bleed for a lie, wanderers. Open the porcelain grave. Look upon the god you carry before you die for its hunger.'
+                    </div>
+
+                    <div class="statblock">
+                        <div class="statblock-title">
+                            <span>BOSS: VAREK THE FACELESS (SKIRMISH)</span>
+                            <span>Nemesis</span>
+                        </div>
+                        <div class="stat-meta">
+                            <span class="stat-badge">Threshold: Extreme (20+)</span>
+                            <span class="stat-badge">HP: 18</span>
+                        </div>
+                        <p style="margin:2px 0;"><strong>Approaches:</strong> <strong>STR / COS</strong> (parrying massive cleaves into bone pillars) or <strong>WIT / AGI</strong> (exploiting his sensory reliance on soul-auras to flank).</p>
+                        <p style="margin:2px 0; color:var(--brand-red-dark);"><strong>Counterattack (if Alive / on Bust):</strong> <em>Corpse-Fire Shockwave</em>. Rune-blade deals <strong>1d10 damage</strong> (HP or MP) and blasts target into the campfire.</p>
+                        <p style="margin:2px 0;"><strong>Withdrawal:</strong> At 0 HP, Varek hurls an alchemical smoke bomb: <em>'Turn back, or your bones will pave the temple.'</em></p>
+                    </div>
+                    <div class="referee-box">
+                        <strong>End of Session 1 Check:</strong> Roll the accumulated Tension Die on the Wasteland Threat Table and reset to d4!
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-rule">
+                <span>Blast or Bust TTRPG &bull; Campaign Module: The Ash-Casket of Oasis-Nine</span>
+                <span>Page 3 / 6</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 4: SESSION 2 (SCENES 5 & 6) -->
+    <div class="page-container">
+        <div class="page-badge">Page 4 of 6 &bull; Session 2: The Iron Basin</div>
+        <div class="page">
+            <div class="section-header">
+                <span>SESSION 2: THE IRON BASIN &bull; SCENE 5 & 6</span>
+                <span class="tag">Caustic Flats & Canyon Ambush</span>
+            </div>
+
+            <div class="two-col">
+                <!-- SCENE 5 -->
+                <div class="scene-card">
+                    <div class="scene-card-header">
+                        <h3>Scene 5: The Alkali Sinks</h3>
+                        <span class="scene-badge">Scene 5 &bull; Force of Nature</span>
+                    </div>
+                    <div class="scene-img-box">
+                        <img src="assets/img/campaign/scene_5_alkali_sinks.jpg" alt="Scene 5: The Alkali Sinks">
+                        <div class="scene-img-caption">
+                            <span>The Blinding Alkali Flats</span>
+                            <span>Boiling Lye & Leaking Spirit-Blood</span>
+                        </div>
+                    </div>
+                    <div class="read-aloud">
+                        The salt flats stretch to infinity under a bleached sun. The ground feels sickeningly spongy. Sulfur fumaroles hiss, and beneath the thin crust boils a sea of caustic lye and quicksilver. The Casket shudders violently. From its bronze rim, a single drop of condensate oozes onto the salt. It is thick, iridescent, copper-smelling crimson fluid—spirit-blood—and where it falls, the lye smokes like brimstone.
+                    </div>
+                    <div class="clue-box">
+                        <strong>Foreshadowing Clue #2 (Metabolic Digestion):</strong><br>
+                        A healer or arcanist testing the fluid (<strong>WIT 14+</strong>) detects intense spiritual digestion. Whatever is inside is generating violent metaphysical waste-heat. A mortal maiden would be incinerated from the inside out.
+                    </div>
+                    <div class="statblock">
+                        <div class="statblock-title">
+                            <span>OBSTACLE: THE BOILING ALKALI CRUST</span>
+                            <span>Hazard</span>
+                        </div>
+                        <div class="stat-meta">
+                            <span class="stat-badge">Threshold: Hard (17+)</span>
+                            <span class="stat-badge">HP: 24</span>
+                        </div>
+                        <p style="margin:2px 0;"><strong>Approaches:</strong> <strong>AGI</strong> (guiding beasts across narrow ridges) or <strong>WIT</strong> (reading subterranean shimmer to avoid quicksand pockets).</p>
+                        <p style="margin:2px 0; color:var(--brand-red-dark);"><strong>Counterattack (if Alive / on Bust):</strong> <em>Lye Geyser</em>. Acidic sludge erupts: deals <strong>1d8 HP damage</strong> and destroys 1 mundane item or waterskin.</p>
+                    </div>
+                </div>
+
+                <!-- SCENE 6 -->
+                <div class="scene-card">
+                    <div class="scene-card-header">
+                        <h3>Scene 6: Ambush in Siphon Canyon</h3>
+                        <span class="scene-badge">Scene 6 &bull; Cult Ambush</span>
+                    </div>
+                    <div class="scene-img-box">
+                        <img src="assets/img/campaign/scene_6_canyon_ambush.jpg" alt="Scene 6: Ambush in the Siphon Canyon">
+                        <div class="scene-img-caption">
+                            <span>Petrified Aqueduct Columns</span>
+                            <span>The Kiln-Scrap Cult Ambush</span>
+                        </div>
+                    </div>
+                    <div class="read-aloud">
+                        Siphon Canyon narrows into a red gorge lined with ancient aqueduct columns. High on maintenance ledges, scavengers wearing cracked ceramic masks mended with lead appear. 'The White Vessel!' their leader screeches. 'The Water-Eater is ours! Smelt the bronze! Drink its blood!' Clay jars shatter in blinding sheets of alchemical fire as boulders crash down!
+                    </div>
+
+                    <div class="statblock">
+                        <div class="statblock-title">
+                            <span>OBSTACLE: KILN-SCRAP CANYON AMBUSH</span>
+                            <span>Ambush</span>
+                        </div>
+                        <div class="stat-meta">
+                            <span class="stat-badge">Threshold: Mod (14+)</span>
+                            <span class="stat-badge">HP: 28</span>
+                        </div>
+                        <p style="margin:2px 0;"><strong>Approaches:</strong> <strong>STR</strong> (clearing deadfalls, throwing javelins at ledges) or <strong>PRE</strong> (bellowing terrifying war-threats, breaking their fanatic zeal).</p>
+                        <p style="margin:2px 0; color:var(--brand-red-dark);"><strong>Counterattack (if Alive / on Bust):</strong> <em>Alchemical Fire-Pot</em>. Deals <strong>1d6 HP</strong> and inflicts <em>Burning</em> condition (disadvantage on physical checks until smothered).</p>
+                        <p style="margin:2px 0;"><strong>Interrogation Clue:</strong> Captives weep: <em>'It drinks people! In the old war, it drank three villages to fill the high fountains!'</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-rule">
+                <span>Blast or Bust TTRPG &bull; Campaign Module: The Ash-Casket of Oasis-Nine</span>
+                <span>Page 4 / 6</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 5: SESSION 2 & 3 (SCENES 7 & 8) -->
+    <div class="page-container">
+        <div class="page-badge">Page 5 of 6 &bull; The Titan's Tomb & The Ridge Duel</div>
+        <div class="page">
+            <div class="section-header">
+                <span>THE TITAN'S TOMB & THE NEMESIS CLIMAX &bull; SCENE 7 & 8</span>
+                <span class="tag">Ancient Arcanotech & Boss Duel</span>
+            </div>
+
+            <div class="two-col">
+                <!-- SCENE 7 -->
+                <div class="scene-card">
+                    <div class="scene-card-header">
+                        <h3>Scene 7: Tomb of Stone Colossus</h3>
+                        <span class="scene-badge">Scene 7 &bull; Exploration</span>
+                    </div>
+                    <div class="scene-img-box">
+                        <img src="assets/img/campaign/scene_7_stone_colossus.jpg" alt="Scene 7: The Tomb of the Stone Colossus">
+                        <div class="scene-img-caption">
+                            <span>The Slumbering Titan's Ribcage</span>
+                            <span>Aurichalcum Conduits & Vault Portal</span>
+                        </div>
+                    </div>
+                    <div class="read-aloud">
+                        You take refuge in the hollow ribcage of the Slumbering Titan—a 200-foot stone golem carved by the First Builders. Along granite pillars run conduits of liquid glowing aurichalcum. Deep in the sternum chamber, the way north is barred by a massive circular vault door covered in spinning runic rings beside an ancient offering altar.
+                    </div>
+                    <div class="clue-box">
+                        <strong>Foreshadowing Clue #3 (Ancient Inscription):</strong><br>
+                        Deciphering the pedestal hieroglyphs (<strong>KNO 14+</strong>) yields the terrible truth:<br>
+                        <em>“VESSEL MODEL IX: REVERSE-ENTROPIC ALAMBIC. TRANSFORMS LIVING HUMORS AND ANIMA-FORCE INTO PURE HYDRAULIC ELEMENT. ONE SOUL PER THOUSAND AMPHORAE.”</em>
+                    </div>
+                    <div class="statblock">
+                        <div class="statblock-title">
+                            <span>OBSTACLE: THE TITAN’S WARDED PORTAL</span>
+                            <span>Sorcery</span>
+                        </div>
+                        <div class="stat-meta">
+                            <span class="stat-badge">Threshold: Hard (17+)</span>
+                            <span class="stat-badge">HP: 20</span>
+                        </div>
+                        <p style="margin:2px 0;"><strong>Approaches:</strong> <strong>KNO</strong> (harmonic ring sequence) or <strong>STR / COS</strong> (heaving calcified counterweights).</p>
+                        <p style="margin:2px 0; color:var(--brand-red-dark);"><strong>Counterattack (if Alive / on Bust):</strong> <em>Arcane Backlash</em>. Golden lightning arcs for <strong>1d8 MP damage</strong> (and steps up the Tension Die on a <strong>Bust</strong>)!</p>
+                    </div>
+                    <div class="referee-box">
+                        <strong>End of Session 2 Check:</strong> Roll the Tension Die and reset to d4!
+                    </div>
+                </div>
+
+                <!-- SCENE 8 -->
+                <div class="scene-card">
+                    <div class="scene-card-header">
+                        <h3>Scene 8: Blood on Vitrified Ridge</h3>
+                        <span class="scene-badge">Scene 8 &bull; Boss Climax</span>
+                    </div>
+                    <div class="scene-img-box">
+                        <img src="assets/img/campaign/scene_8_vitrified_ridge_duel.jpg" alt="Scene 8: Blood upon the Vitrified Ridge">
+                        <div class="scene-img-caption">
+                            <span>The Vitrified Obsidian Ridge</span>
+                            <span>The Final Stand of Varek</span>
+                        </div>
+                    </div>
+                    <div class="read-aloud">
+                        You crest a ridge of black obsidian glass overlooking the white towers of Oasis-Nine. Waiting at the apex stands Varek the Faceless, greatsword driven into the glass. 'You carried a slaughterhouse across the desert and called it devotion. If your eyes will not open, my blade will open them. The machine dies today—or you die defending it.'
+                    </div>
+
+                    <div class="statblock">
+                        <div class="statblock-title">
+                            <span>BOSS: VAREK THE FACELESS (UNLEASHED)</span>
+                            <span>Nemesis Boss</span>
+                        </div>
+                        <div class="stat-meta">
+                            <span class="stat-badge">Threshold: Hard (17+) / (14+ on pauldron runes)</span>
+                            <span class="stat-badge">HP: 35</span>
+                            <span class="stat-badge">MP: 20</span>
+                        </div>
+                        <p style="margin:2px 0;"><strong>Approaches:</strong> <strong>STR / AGI</strong> (slipping past cleaves to strike knee joints) or <strong>PRE / KNO</strong> (invoking temple oaths, naming his dead daughter, unbinding his cloak wards).</p>
+                        <p style="margin:2px 0; color:var(--brand-red-dark);"><strong>Counterattack (if Alive / on Bust):</strong> <em>Soul-Cleaving Brand</em>. White-hot corpse fire deals <strong>2d8 damage</strong> (HP or MP) and <strong>permanently shatters 1 weapon/shield</strong>!</p>
+                    </div>
+                    <div class="referee-box">
+                        <strong>The Dying Revelation:</strong> Collapsing at 0 HP, Varek grips a player's arm: <em>“Break the seals... look into the cradle before you give it to Orhan... Do not let them feed her name to the fire...”</em>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-rule">
+                <span>Blast or Bust TTRPG &bull; Campaign Module: The Ash-Casket of Oasis-Nine</span>
+                <span>Page 5 / 6</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 6: SESSION 3 (SCENES 9 & 10) & THE MORAL CRUCIBLE -->
+    <div class="page-container">
+        <div class="page-badge">Page 6 of 6 &bull; The Citadel & The Moral Crucible</div>
+        <div class="page page-6">
+            <div class="section-header">
+                <span>SESSION 3: THE CITADEL & THE SHATTERED TRUTH &bull; SCENE 9 & 10</span>
+                <span class="tag">The Grand Twist & Resolution</span>
+            </div>
+
+            <div class="two-col">
+                <!-- SCENE 9 -->
+                <div class="scene-card">
+                    <div class="scene-card-header">
+                        <h3>Scene 9: The Ivory Spire</h3>
+                        <span class="scene-badge">Scene 9 &bull; Citadel Gates</span>
+                    </div>
+                    <div class="scene-img-box">
+                        <img src="assets/img/campaign/scene_9_oasis_nine_gates.jpg" alt="Scene 9: The Ivory Spire of Oasis-Nine">
+                        <div class="scene-img-caption">
+                            <span>The Monumental Alabaster Gates</span>
+                            <span>Prelate Orhan's Welcome & Blood Gutters</span>
+                        </div>
+                    </div>
+                    <div class="read-aloud">
+                        Oasis-Nine is a paradise of spiraling white towers and cold aqueducts. Outside the alabaster walls, thousands of emaciated, maskless kiln-slaves toil in mud trenches under overseer whips. High Prelate Orhan descends the grand marble steps in white spidersilk robes and a lapis-inlaid smiling porcelain mask: 'Blessed guardians, bring the Holy Maiden to the Inner Sanctum!'
+                    </div>
+                    <div class="referee-box">
+                        <strong>The Suspicion (WIT 14+):</strong> Through the sanctum grates, characters spot no royal cushions. Instead, executioners carry bronze chains, vinegar sponges, and blood drainage basins surrounding a sunken drain-pit.
+                    </div>
+                </div>
+
+                <!-- SCENE 10 -->
+                <div class="scene-card">
+                    <div class="scene-card-header">
+                        <h3>Scene 10: The Anima-Still Awakens</h3>
+                        <span class="scene-badge">Scene 10 &bull; Climax</span>
+                    </div>
+                    <div class="scene-img-box">
+                        <img src="assets/img/campaign/scene_10_anima_still_reveal.jpg" alt="Scene 10: The Anima-Still Awakens">
+                        <div class="scene-img-caption">
+                            <span>The Sacrificial Inner Sanctum</span>
+                            <span>The Soul-Crucible Revealed</span>
+                        </div>
+                    </div>
+                    <div class="read-aloud">
+                        The porcelain lid is swung wide. There is no maiden inside. Resting upon the purple velvet cradle is a monstrous apparatus of spun gold, crystal alembics, and razor-tipped extraction needles: The Anima-Still. Priests drag forward two shivering teenage kiln-slaves in bronze collars. Prelate Orhan looks calmly at your drawn blades: 'Did you think heaven poured water upon this dead earth? Take your gold, put on your golden masks, and walk away.'
+                    </div>
+                </div>
+            </div>
+
+            <!-- THE MORAL CRUCIBLE -->
+            <div class="section-header">
+                <span>⚖️ THE MORAL CRUCIBLE: THE FINAL FATE OF OASIS-NINE</span>
+                <span class="tag">Player Choice</span>
+            </div>
+
+            <div class="two-col" style="margin-top:6px;">
+                <div style="background:#fcf9f2; border:1px solid #d4af37; padding:8px; border-radius:2px;">
+                    <h4 style="color:#8b6914; margin:0 0 4px 0;">OPTION A: The Aristocratic Compromise (Cynical Survival)</h4>
+                    <p style="font-size:7.6pt; margin:0 0 4px 0;">The players take their bags of platinum, estate deeds, and turn their backs. The needles pierce the children's spines; the crucible flares cyan, and fountains gush with fresh water.</p>
+                    <p style="font-size:7.6pt; margin:0; font-style:italic;"><strong>Epilogue:</strong> Orhan places Smiling Golden Masks over their faces. They are now immortal lords of the oasis—living in luxury bought with the screams of the dead.</p>
+                </div>
+
+                <div style="background:#fbf3f2; border:1px solid var(--brand-red); padding:8px; border-radius:2px;">
+                    <h4 style="color:var(--brand-red-dark); margin:0 0 4px 0;">OPTION B: Shattering the Soul-Crucible (The Rebel’s Blast)</h4>
+                    <p style="font-size:7.6pt; margin:0 0 4px 0;">The party attacks Prelate Orhan and the Temple Guard (<strong>Threshold: Extreme 19+ | HP: 32</strong>). Counterattack (if alive / on bust) deals <strong>2d10 HP</strong> from lapis sunfire.</p>
+                    <p style="font-size:7.6pt; margin:0; font-style:italic;"><strong>Epilogue:</strong> The machine shatters into crystal shards. Fountains dry up; slaves rise in revolt. The party flees into the dunes as outlaws, bearing Varek's five-horned iron helm as a sacred relic.</p>
+                </div>
+            </div>
+
+            <!-- QUICK REFERENCE TABLE -->
+            <table class="table-custom" style="margin-top:10px;">
+                <thead>
+                    <tr>
+                        <th style="width:5%;">Sc.</th>
+                        <th style="width:28%;">Scene &amp; Hazard</th>
+                        <th style="width:18%;">Attributes</th>
+                        <th style="width:14%;">Threshold</th>
+                        <th style="width:35%;">Counterattack (if Alive) / Bust</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>1</strong></td><td>Contract at Kiln-Hearth</td><td>KNO / PRE</td><td>14+</td><td>Misses necro-runes; Tension starts at d4</td></tr>
+                    <tr><td><strong>2</strong></td><td>The Screaming Sirocco</td><td>COS / WIT</td><td>17+</td><td>1d6 HP glass-flayed damage; Tension steps up</td></tr>
+                    <tr><td><strong>3</strong></td><td>The Sinking Span & Saurs</td><td>STR / AGI</td><td>14+</td><td>1d8 HP & knocked prone on edge of chasm</td></tr>
+                    <tr><td><strong>4</strong></td><td>The Stalker in the Ash</td><td>STR / PRE</td><td>20+</td><td>1d10 damage shockwave; Varek tests resolve</td></tr>
+                    <tr><td><strong>5</strong></td><td>The Boiling Alkali Sinks</td><td>AGI / WIT</td><td>17+</td><td>1d8 HP lye burn & gear destroyed; spirit-blood leaks</td></tr>
+                    <tr><td><strong>6</strong></td><td>Ambush in Siphon Canyon</td><td>STR / PRE</td><td>14+</td><td>1d6 HP alchemical fire & Burning condition</td></tr>
+                    <tr><td><strong>7</strong></td><td>Tomb of Stone Colossus</td><td>KNO / STR</td><td>17+</td><td>1d8 MP arcane backlash; reads dark lore</td></tr>
+                    <tr><td><strong>8</strong></td><td>Duel on Vitrified Ridge</td><td>STR / KNO</td><td>17+</td><td>2d8 damage & shatters 1 weapon; dying plea</td></tr>
+                    <tr><td><strong>9</strong></td><td>The Ivory Spire Gates</td><td>PRE / WIT</td><td>14+</td><td>Spots sacrificial drains and executioner tools</td></tr>
+                    <tr><td><strong>10</strong></td><td>The Anima-Still Awakens</td><td>Any (Combat)</td><td>19+</td><td>2d10 HP sunfire; Fate of Oasis-Nine decided</td></tr>
+                </tbody>
+            </table>
+
+            <div class="footer-rule">
+                <span>Blast or Bust TTRPG &bull; Campaign Module: The Ash-Casket of Oasis-Nine &bull; By Federico Latini</span>
+                <span>Page 6 / 6</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
